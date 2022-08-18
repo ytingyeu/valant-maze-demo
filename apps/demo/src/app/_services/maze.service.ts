@@ -13,4 +13,9 @@ export class MazeService {
     const listOfMazes = of(MOCK_MAZES);
     return listOfMazes;
   }
+
+  getSingleMaze(id: number): Observable<IMaze> {
+    const maze = MOCK_MAZES.find((maze) => maze.id === id);
+    return of(maze);
+  }
 }

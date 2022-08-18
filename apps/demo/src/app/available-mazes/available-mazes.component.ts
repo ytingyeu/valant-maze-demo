@@ -19,8 +19,4 @@ export class AvailableMazesComponent implements OnInit {
   getMazes() {
     this.mazeService.getListOfMazes().subscribe((mazes) => (this.listOfMazes = mazes));
   }
-
-  onClickPlay(maze: IMaze) {
-    console.log(maze);
-  }
 }
