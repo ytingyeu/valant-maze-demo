@@ -11,6 +11,6 @@
       </tr>
     </table>
     <div>Upload date: {{maze.uploadDate}}</div>
-    <button (click)="onClickPlay()">Play</button>
+    <a routerLink="/play-maze/{{maze.id}}">Play</a>
   </li>
 </ul>
