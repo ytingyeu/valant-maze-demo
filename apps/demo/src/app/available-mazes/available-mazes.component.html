@@ -1,0 +1,16 @@
+<p>available-mazes works!</p>
+
+<h2>Available Mazes</h2>
+<ul class="available-mazes">
+  <li *ngFor="let maze of listOfMazes">
+    <table class="display-maze">
+      <tr *ngFor="let row of maze.maze">
+        <td *ngFor="let col of row.split('')">
+          {{col | charToMaze}}
+        </td>
+      </tr>
+    </table>
+    <div>Upload date: {{maze.uploadDate}}</div>
+    <button>Play</button>
+  </li>
+</ul>
