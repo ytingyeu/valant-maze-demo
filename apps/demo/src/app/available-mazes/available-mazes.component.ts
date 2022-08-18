@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { IMaze } from '../_models/maze/maze';
-import { MAZES } from '../_models/maze/mock-mazes';
-import { CharToMazePipe } from '../_pipes/char-to-maze.pipe';
+import { MazeService } from '../_services/maze.service';
 
 @Component({
   selector: 'valant-available-mazes',
@@ -9,9 +8,17 @@ import { CharToMazePipe } from '../_pipes/char-to-maze.pipe';
   styleUrls: ['./available-mazes.component.less'],
 })
 export class AvailableMazesComponent implements OnInit {
-  listOfMazes: IMaze[] = MAZES;
+  listOfMazes: IMaze[] = [];
 
-  constructor() {}
+  constructor(private mazeService: MazeService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.getMazes();
+  }
+
+  getMazes() {
+    this.mazeService.getListOfMazes().subscribe((mazes) => (this.listOfMazes = mazes));
+  }
+
+  onClickPlay() {}
 }
