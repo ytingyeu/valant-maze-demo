@@ -64,8 +64,7 @@ namespace ValantDemoApi
     {
 
       DateTime dt1 = new(2022, 8, 18, 13, 15, 22);
-
-      var testMaze1 = new Models.Maze
+      var testMaze1 = new Maze
       {
         Id = 12,
         UploadDate = dt1.ToUniversalTime().ToString(),
@@ -79,9 +78,7 @@ namespace ValantDemoApi
       context.Mazes.Add(testMaze1);
 
       DateTime dt2 = new(2022, 8, 18, 16, 29, 52);
-      int[] start2 = { 0, 0 };
-      int[] end2 = { 6, 2 };
-      var testMaze2 = new Models.Maze
+      var testMaze2 = new Maze
       {
         Id = 13,
         UploadDate = dt2.ToUniversalTime().ToString(),
