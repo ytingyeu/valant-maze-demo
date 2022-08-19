@@ -1,0 +1,10 @@
+<p>available-mazes works!</p>
+
+<h2>Available Mazes</h2>
+<ul class="available-mazes">
+  <li *ngFor="let maze of listOfMazes">
+    <valant-display-maze [maze]="maze"></valant-display-maze>
+    <div>Upload date: {{maze.uploadDate}}</div>
+    <a routerLink="/play-maze/{{maze.id}}">Play</a>
+  </li>
+</ul>
