@@ -7,6 +7,9 @@ using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
 
 using System;
+using System.Collections.Generic;
+using ValantDemoApi.Models;
+using System.Linq;
 
 namespace ValantDemoApi
 {
@@ -32,7 +35,7 @@ namespace ValantDemoApi
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
     {
       if (env.IsDevelopment())
       {
@@ -41,7 +44,7 @@ namespace ValantDemoApi
         app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ValantDemoApi v1"));
       }
 
-      var context = app.ApplicationServices.GetService<ApiContext>();
+      var context = serviceProvider.GetService<ApiContext>();
       AddTestData(context);
 
       app.UseRouting();
@@ -62,29 +65,35 @@ namespace ValantDemoApi
 
       DateTime dt1 = new(2022, 8, 18, 13, 15, 22);
 
-      var testMaze1 = new DbModels.Maze
+      var testMaze1 = new Models.Maze
       {
-        Id = "12",
+        Id = 12,
         UploadDate = dt1.ToUniversalTime().ToString(),
         GraphString = "SOXXXXXXXX#OOOXXXXXXX#OXOOOXOOOO#XXXXOXOXXO#OOOOOOOXXO#OXXOXXXXXO#OOOOXXXXXE#",
-        Start = new Tuple<int, int>(0, 0),
-        Exit = new Tuple<int, int>(6, 9),
-      }; 
+        StartRow = 0,
+        StartCol = 0,
+        ExitRow = 6,
+        ExitCol = 9
+      };
 
       context.Mazes.Add(testMaze1);
 
       DateTime dt2 = new(2022, 8, 18, 16, 29, 52);
-      var testMaze2 = new DbModels.Maze
+      int[] start2 = { 0, 0 };
+      int[] end2 = { 6, 2 };
+      var testMaze2 = new Models.Maze
       {
-        Id = "13",
+        Id = 13,
         UploadDate = dt2.ToUniversalTime().ToString(),
         GraphString = "SOXXXXXXXX#OOOXXXXXXX#OXOOOXOOOO#XXXXOXOXXO#OOOOOOOXXO#OXXXXXOXXX#XXEOOOOXXX#",
-        Start = new Tuple<int, int>(0, 0),
-        Exit = new Tuple<int, int>(6, 2),
+        StartRow = 0,
+        StartCol = 0,
+        ExitRow = 6,
+        ExitCol = 2
       };
 
       context.Mazes.Add(testMaze2);
       context.SaveChanges();
-    }
+    }    
   }
 }

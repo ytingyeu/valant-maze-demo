@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ValantDemoApi.DbModels;
+using ValantDemoApi.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace ValantDemoApi
