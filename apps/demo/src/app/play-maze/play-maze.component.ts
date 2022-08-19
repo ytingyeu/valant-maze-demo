@@ -14,12 +14,17 @@ export class PlayMazeComponent implements OnInit {
   constructor(private route: ActivatedRoute, private mazeService: MazeService) {}
 
   ngOnInit(): void {
-    this.getMaze();
-    console.log(this.maze);
+    this.initMaze();
+    // console.log(this.maze);
   }
 
-  getMaze() {
+  initMaze() {
     const id = Number(this.route.snapshot.paramMap.get('id'));
-    this.mazeService.getSingleMaze(id).subscribe((mazes) => (this.maze = mazes));
+    this.mazeService.getSingleMaze(id).subscribe((maze) => {
+      const row_s = maze.start[0];
+      const col_s = maze.start[1];
+      maze.maze[row_s][col_s] = 'C';
+      this.maze = maze;
+    });
   }
 }

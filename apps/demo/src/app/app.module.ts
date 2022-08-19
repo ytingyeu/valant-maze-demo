@@ -11,13 +11,14 @@ import { AppRoutingModule } from './app-routing.module';
 import { CharToMazePipe } from './_pipes/char-to-maze.pipe';
 import { PlayMazeComponent } from './play-maze/play-maze.component';
 import { DisplayMazeComponent } from './display-maze/display-maze.component';
+import { GamepadComponent } from './play-maze/gamepad/gamepad.component';
 
 export function getBaseUrl(): string {
   return environment.baseUrl;
 }
 
 @NgModule({
-  declarations: [AppComponent, AvailableMazesComponent, CharToMazePipe, PlayMazeComponent, DisplayMazeComponent],
+  declarations: [AppComponent, AvailableMazesComponent, CharToMazePipe, PlayMazeComponent, DisplayMazeComponent, GamepadComponent],
   imports: [BrowserModule, HttpClientModule, AppRoutingModule],
   providers: [
     LoggingService,
