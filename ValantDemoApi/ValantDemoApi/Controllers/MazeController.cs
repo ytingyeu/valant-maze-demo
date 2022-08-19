@@ -29,11 +29,6 @@ namespace ValantDemoApi.Controllers
         return NotFound();
       }
 
-        [HttpGet]
-        public IEnumerable<string> GetNextAvailableMoves()
-        {
-          return new List<string> {"Up", "Down", "Left", "Right"};
-        }
       return maze;
     }
 
