@@ -13,8 +13,11 @@ export class DisplayMazeComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
-    this.maze.graphString.split('#').forEach((row) => {
-      this.graph.push(row.split(''));
-    });
+    let json = JSON.parse(this.maze.graphString);
+    this.graph = json.graph;
+
+    // this.maze.graphString.split('#').forEach((row) => {
+    //   this.graph.push(row.split(''));
+    // });
   }
 }

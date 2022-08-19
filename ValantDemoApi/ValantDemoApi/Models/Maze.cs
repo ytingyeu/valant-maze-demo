@@ -9,7 +9,6 @@ namespace ValantDemoApi.Models
 {
   public class Maze
   {
-
     public int Id { get; set; }
     public string UploadDate { get; set; }
 
@@ -20,22 +19,49 @@ namespace ValantDemoApi.Models
     public int StartCol { get; set; }
 
     public int ExitRow { get; set; }
-    public int ExitCol { get; set; }
-    
-    //public Cell Start { get; set;  }
-    //public Cell Exit { get; set; }
-
-    //public List<List<String>> Graph { get; set; }
+    public int ExitCol { get; set; }   
   }
 
-  public class MazeDTO
+  public class MazeResponseDto
   {
+
+    public MazeResponseDto(Maze maze)
+    {
+      Id = maze.Id;
+      UploadDate = maze.UploadDate;
+      GraphString = maze.GraphString;
+
+      Start = new Cell(maze.StartRow, maze.StartCol);
+      Exit = new Cell(maze.ExitRow, maze.ExitCol);
+    }
+
+
     public int Id { get; set; }
     public string UploadDate { get; set; }
     public string GraphString { get; set; }
-    public List<int> Start { get; set; }
-    public List<int> End { get; set; }
+    public Cell Start { get; set; }
+    public Cell Exit { get; set; }
   }
+
+  public class MazePostDto
+  {
+    public string GraphString { get; set; }
+    public Cell Start { get; set; }
+    public Cell Exit { get; set; }
+  }
+
+  public class Cell
+  {
+    public Cell(int row, int col)
+    {
+      Row = row;
+      Col = col;
+    }
+
+    public int Row { get; set; }
+    public int Col { get; set; }
+  }
+
 }
 
 
