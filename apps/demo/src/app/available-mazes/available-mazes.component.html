@@ -3,13 +3,7 @@
 <h2>Available Mazes</h2>
 <ul class="available-mazes">
   <li *ngFor="let maze of listOfMazes">
-    <table class="display-maze">
-      <tr *ngFor="let row of maze.maze">
-        <td *ngFor="let col of row.split('')">
-          {{col | charToMaze}}
-        </td>
-      </tr>
-    </table>
+    <valant-display-maze [maze]="maze"></valant-display-maze>
     <div>Upload date: {{maze.uploadDate}}</div>
     <a routerLink="/play-maze/{{maze.id}}">Play</a>
   </li>

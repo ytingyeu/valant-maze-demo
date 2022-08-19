@@ -1,0 +1,7 @@
+<table class="display-maze">
+  <tr *ngFor="let row of maze.maze">
+    <td *ngFor="let col of row.split('')">
+      {{col | charToMaze}}
+    </td>
+  </tr>
+</table>
