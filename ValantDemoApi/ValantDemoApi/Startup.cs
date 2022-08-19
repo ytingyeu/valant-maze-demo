@@ -4,6 +4,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Microsoft.EntityFrameworkCore;
+
+using System;
+using System.Collections.Generic;
+using ValantDemoApi.Models;
+using System.Linq;
 
 namespace ValantDemoApi
 {
@@ -19,6 +25,7 @@ namespace ValantDemoApi
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
+      services.AddDbContext<ApiContext>(opt => opt.UseInMemoryDatabase(databaseName: "ValantMaze"));
       services.AddCors();
       services.AddControllers();
       services.AddSwaggerGen(c =>
@@ -28,7 +35,7 @@ namespace ValantDemoApi
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
     {
       if (env.IsDevelopment())
       {
@@ -36,6 +43,9 @@ namespace ValantDemoApi
         app.UseSwagger();
         app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ValantDemoApi v1"));
       }
+
+      var context = serviceProvider.GetService<ApiContext>();
+      AddTestData(context);
 
       app.UseRouting();
       app.UseCors(x => x
@@ -50,5 +60,40 @@ namespace ValantDemoApi
         endpoints.MapControllers();
       });
     }
+    private static void AddTestData(ApiContext context)
+    {
+
+      DateTime dt1 = new(2022, 8, 18, 13, 15, 22);
+
+      var testMaze1 = new Models.Maze
+      {
+        Id = 12,
+        UploadDate = dt1.ToUniversalTime().ToString(),
+        GraphString = "SOXXXXXXXX#OOOXXXXXXX#OXOOOXOOOO#XXXXOXOXXO#OOOOOOOXXO#OXXOXXXXXO#OOOOXXXXXE#",
+        StartRow = 0,
+        StartCol = 0,
+        ExitRow = 6,
+        ExitCol = 9
+      };
+
+      context.Mazes.Add(testMaze1);
+
+      DateTime dt2 = new(2022, 8, 18, 16, 29, 52);
+      int[] start2 = { 0, 0 };
+      int[] end2 = { 6, 2 };
+      var testMaze2 = new Models.Maze
+      {
+        Id = 13,
+        UploadDate = dt2.ToUniversalTime().ToString(),
+        GraphString = "SOXXXXXXXX#OOOXXXXXXX#OXOOOXOOOO#XXXXOXOXXO#OOOOOOOXXO#OXXXXXOXXX#XXEOOOOXXX#",
+        StartRow = 0,
+        StartCol = 0,
+        ExitRow = 6,
+        ExitCol = 2
+      };
+
+      context.Mazes.Add(testMaze2);
+      context.SaveChanges();
+    }    
   }
 }
