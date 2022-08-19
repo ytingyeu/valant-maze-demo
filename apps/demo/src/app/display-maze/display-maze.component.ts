@@ -8,8 +8,13 @@ import { IMaze } from '../_models/maze/maze';
 })
 export class DisplayMazeComponent implements OnInit {
   @Input() maze!: IMaze;
+  graph: string[][] = [];
 
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.maze.graphString.split('#').forEach((row) => {
+      this.graph.push(row.split(''));
+    });
+  }
 }

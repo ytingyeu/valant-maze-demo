@@ -21,9 +21,7 @@ export class PlayMazeComponent implements OnInit {
   initMaze() {
     const id = Number(this.route.snapshot.paramMap.get('id'));
     this.mazeService.getSingleMaze(id).subscribe((maze) => {
-      const row_s = maze.start[0];
-      const col_s = maze.start[1];
-      maze.graph[row_s][col_s] = 'C';
+      maze.graphString.replace('S', 'C');
       this.maze = maze;
     });
   }
