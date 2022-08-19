@@ -9,6 +9,7 @@ export class CharToMazePipe implements PipeTransform {
   constructor() {
     this.mazeHashMap = {
       S: '🐁',
+      C: '🐁',
       E: '🧀',
       O: ' ',
       X: '⬛',
