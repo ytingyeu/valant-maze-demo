@@ -4,7 +4,7 @@ export const MOCK_MAZES: IMaze[] = [
   {
     id: 12,
     uploadDate: new Date(2022, 7, 18, 15, 20, 12).toLocaleString(),
-    maze: [
+    graph: [
       ['S', 'O', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'],
       ['O', 'O', 'O', 'X', 'X', 'X', 'X', 'X', 'X', 'X'],
       ['O', 'X', 'O', 'O', 'O', 'X', 'O', 'O', 'O', 'O'],
@@ -19,7 +19,7 @@ export const MOCK_MAZES: IMaze[] = [
   {
     id: 13,
     uploadDate: new Date(2022, 7, 18, 17, 23, 42).toLocaleString(),
-    maze: [
+    graph: [
       ['S', 'O', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'],
       ['O', 'O', 'O', 'X', 'X', 'X', 'X', 'X', 'X', 'X'],
       ['O', 'X', 'O', 'O', 'O', 'X', 'O', 'O', 'O', 'O'],

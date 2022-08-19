@@ -1,5 +1,5 @@
 <table class="display-maze">
-  <tr *ngFor="let row of maze.maze">
+  <tr *ngFor="let row of maze.graph">
     <td *ngFor="let col of row">
       {{col | charToMaze}}
     </td>

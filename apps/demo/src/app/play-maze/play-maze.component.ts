@@ -23,7 +23,7 @@ export class PlayMazeComponent implements OnInit {
     this.mazeService.getSingleMaze(id).subscribe((maze) => {
       const row_s = maze.start[0];
       const col_s = maze.start[1];
-      maze.maze[row_s][col_s] = 'C';
+      maze.graph[row_s][col_s] = 'C';
       this.maze = maze;
     });
   }
