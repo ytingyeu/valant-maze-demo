@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { IMaze } from '../_models/maze/maze';
 import { MazeService } from '../_services/maze.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { callbackify } from 'util';
+import { LoggingService } from '../logging/logging.service';
 
 @Component({
   selector: 'valant-available-mazes',
@@ -15,7 +15,7 @@ export class AvailableMazesComponent implements OnInit {
   uploadForm: FormGroup;
   jsonFile: string;
 
-  constructor(private mazeService: MazeService, private formBuilder: FormBuilder) {}
+  constructor(private logger: LoggingService, private mazeService: MazeService, private formBuilder: FormBuilder) {}
 
   ngOnInit(): void {
     this.uploadForm = this.formBuilder.group({
@@ -45,13 +45,20 @@ export class AvailableMazesComponent implements OnInit {
     fileReader.onload = (fileLoadedEvent) => {
       const textFromFileLoaded = fileLoadedEvent.target.result;
       const json = JSON.parse(textFromFileLoaded.toString());
+      this.postMazes(json);
+    };
+    fileReader.readAsText(file, 'UTF-8');
+  }
 
-      this.mazeService.postMaze(json).subscribe((mazes) => {
+  private postMazes(json: string): void {
+    this.mazeService.postMaze(json).subscribe({
+      next: (mazes: IMaze[]) => {
         this.listOfMazes = mazes;
         this.isLoaded = true;
-      });
-    };
-
-    fileReader.readAsText(file, 'UTF-8');
+      },
+      error: (error) => {
+        this.logger.error('Error getting mazes: ', error);
+      },
+    });
   }
 }
