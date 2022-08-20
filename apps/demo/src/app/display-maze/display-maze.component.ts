@@ -14,9 +14,6 @@ export class DisplayMazeComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
-    // let json = JSON.parse(this.maze.graphString);
-    // this.graph = json.graph;
-
     this.graph = Utils.ConvertGraphStringToList(this.maze.graphString);
   }
 }

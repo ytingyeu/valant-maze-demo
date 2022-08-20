@@ -11,6 +11,7 @@ import { mergeMap as _observableMergeMap, catchError as _observableCatch } from 
 import { Observable, throwError as _observableThrow, of as _observableOf } from 'rxjs';
 import { Injectable, Inject, Optional, InjectionToken } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse, HttpResponseBase } from '@angular/common/http';
+import { IMaze } from '../_models/maze/maze';
 
 export module ValantDemoApiClient {
   export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
@@ -24,6 +25,18 @@ export module ValantDemoApiClient {
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
       this.http = http;
       this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : '';
+    }
+
+    getListOfMazes(): Observable<any> {
+      // console.log(res);
+      const mazeUrl = this.baseUrl + '/Maze/all';
+      return this.http.get<IMaze>(mazeUrl);
+    }
+
+    getMazeById(id: number): Observable<any> {
+      // console.log(res);
+      const mazeUrl = this.baseUrl + '/Maze/' + id;
+      return this.http.get<IMaze>(mazeUrl);
     }
 
     /**

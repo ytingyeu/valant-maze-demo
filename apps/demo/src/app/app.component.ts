@@ -15,7 +15,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.logger.log('Welcome to the AppComponent');
-    this.getStuff();
+    // this.getStuff();
   }
 
   private getStuff(): void {

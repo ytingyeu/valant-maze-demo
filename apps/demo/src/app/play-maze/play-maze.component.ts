@@ -10,18 +10,17 @@ import { MazeService } from '../_services/maze.service';
 })
 export class PlayMazeComponent implements OnInit {
   maze: IMaze | undefined;
+  isLoaded: boolean = false;
 
   constructor(private route: ActivatedRoute, private mazeService: MazeService) {}
 
   ngOnInit(): void {
-    this.initMaze();
-    // console.log(this.maze);
-  }
-
-  initMaze() {
     const id = Number(this.route.snapshot.paramMap.get('id'));
-    this.mazeService.getSingleMaze(id).subscribe((maze) => {
-      maze.graphString.replace('S', 'C');
+
+    this.mazeService.getMazeById(id).subscribe((maze) => {
+      console.log(maze);
+      // maze.graphString.replace('S', 'C');
+      this.isLoaded = true;
       this.maze = maze;
     });
   }
