@@ -14,14 +14,24 @@ import { DisplayMazeComponent } from './display-maze/display-maze.component';
 import { GamepadComponent } from './play-maze/gamepad/gamepad.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { HomeComponent } from './home/home.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 export function getBaseUrl(): string {
   return environment.baseUrl;
 }
 
 @NgModule({
-  declarations: [AppComponent, AvailableMazesComponent, CharToMazePipe, PlayMazeComponent, DisplayMazeComponent, GamepadComponent, NavbarComponent, HomeComponent],
-  imports: [BrowserModule, HttpClientModule, AppRoutingModule],
+  declarations: [
+    AppComponent,
+    AvailableMazesComponent,
+    CharToMazePipe,
+    PlayMazeComponent,
+    DisplayMazeComponent,
+    GamepadComponent,
+    NavbarComponent,
+    HomeComponent,
+  ],
+  imports: [BrowserModule, HttpClientModule, AppRoutingModule, FormsModule, ReactiveFormsModule],
   providers: [
     LoggingService,
     StuffService,
