@@ -27,16 +27,21 @@ export module ValantDemoApiClient {
       this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : '';
     }
 
-    getListOfMazes(): Observable<any> {
+    getListOfMazes(): Observable<IMaze[]> {
       // console.log(res);
       const mazeUrl = this.baseUrl + '/Maze/all';
-      return this.http.get<IMaze>(mazeUrl);
+      return this.http.get<IMaze[]>(mazeUrl);
     }
 
-    getMazeById(id: number): Observable<any> {
+    getMazeById(id: number): Observable<IMaze> {
       // console.log(res);
       const mazeUrl = this.baseUrl + '/Maze/' + id;
       return this.http.get<IMaze>(mazeUrl);
+    }
+
+    postMaze(json: string): Observable<any> {
+      const mazeUrl = this.baseUrl + '/Maze';
+      return this.http.post(mazeUrl, json);
     }
 
     /**

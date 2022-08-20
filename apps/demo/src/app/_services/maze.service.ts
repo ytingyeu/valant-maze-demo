@@ -16,13 +16,15 @@ export class MazeService {
     this._apiClient = apiClient;
   }
 
-  getListOfMazes(): Observable<any> {
+  getListOfMazes(): Observable<IMaze[]> {
     return this._apiClient.getListOfMazes();
   }
 
   getMazeById(id: number): Observable<IMaze> {
-    const res = this._apiClient.getMazeById(id);
-    // console.log(res);
-    return res;
+    return this._apiClient.getMazeById(id);
+  }
+
+  postMaze(json: string): Observable<IMaze[]> {
+    return this._apiClient.postMaze(json);
   }
 }
