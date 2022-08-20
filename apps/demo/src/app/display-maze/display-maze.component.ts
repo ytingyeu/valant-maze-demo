@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { IMaze } from '../_models/maze/maze';
+import { Utils } from '../_Utils/utils';
 
 @Component({
   selector: 'valant-display-maze',
@@ -13,11 +14,6 @@ export class DisplayMazeComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
-    let json = JSON.parse(this.maze.graphString);
-    this.graph = json.graph;
-
-    // this.maze.graphString.split('#').forEach((row) => {
-    //   this.graph.push(row.split(''));
-    // });
+    this.graph = Utils.ConvertGraphStringToList(this.maze.graphString);
   }
 }

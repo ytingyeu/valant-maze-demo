@@ -1,4 +1,5 @@
 <h2>Play Maze</h2>
-
-<valant-display-maze [maze]="maze"></valant-display-maze>
+<div *ngIf="isLoaded">
+  <valant-display-maze [maze]="maze"></valant-display-maze>
+</div>
 <valant-gamepad></valant-gamepad>
