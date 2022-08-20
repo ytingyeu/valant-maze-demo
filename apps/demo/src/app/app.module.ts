@@ -15,6 +15,7 @@ import { GamepadComponent } from './play-maze/gamepad/gamepad.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { HomeComponent } from './home/home.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NowLoadingComponent } from './now-loading/now-loading.component';
 
 export function getBaseUrl(): string {
   return environment.baseUrl;
@@ -30,6 +31,7 @@ export function getBaseUrl(): string {
     GamepadComponent,
     NavbarComponent,
     HomeComponent,
+    NowLoadingComponent,
   ],
   imports: [BrowserModule, HttpClientModule, AppRoutingModule, FormsModule, ReactiveFormsModule],
   providers: [

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { IMaze } from '../_models/maze/maze';
 import { MazeService } from '../_services/maze.service';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { callbackify } from 'util';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { LoggingService } from '../logging/logging.service';
 
 @Component({
   selector: 'valant-available-mazes',
@@ -13,45 +13,83 @@ export class AvailableMazesComponent implements OnInit {
   listOfMazes: IMaze[] = [];
   isLoaded: boolean = false;
   uploadForm: FormGroup;
-  jsonFile: string;
+  jsonFile: Blob;
+  isSubmitted: boolean = false;
 
-  constructor(private mazeService: MazeService, private formBuilder: FormBuilder) {}
+  constructor(private logger: LoggingService, private mazeService: MazeService, private formBuilder: FormBuilder) {}
 
   ngOnInit(): void {
     this.uploadForm = this.formBuilder.group({
-      mazeJson: [''],
+      inputFile: ['', Validators.required],
     });
 
-    this.mazeService.getListOfMazes().subscribe((mazes) => {
-      this.listOfMazes = mazes;
-      this.isLoaded = true;
-    });
+    this.getMazes();
+  }
+
+  get fc() {
+    return this.uploadForm.controls;
   }
 
   onFileSelect(event: { target: { files: string | any[] } }) {
     if (event.target.files.length > 0) {
       const file = event.target.files[0];
-      this.uploadForm.get('mazeJson').setValue(file);
-      this.jsonFile = file;
+
+      if (file.type === 'application/json') {
+        this.jsonFile = file;
+      } else {
+        this.uploadForm.reset();
+        this.uploadForm.controls['inputFile'].setValidators([Validators.required]);
+        this.uploadForm.get('inputFile').updateValueAndValidity();
+      }
     }
   }
 
   onSubmit() {
+    this.isSubmitted = true;
+
+    if (this.uploadForm.invalid) {
+      return;
+    }
+
     this.isLoaded = false;
-    const file = this.uploadForm.get('mazeJson').value;
 
-    const fileReader = new FileReader();
+    if (this.jsonFile !== null && this.jsonFile !== undefined) {
+      const fileReader = new FileReader();
+      fileReader.onload = (fileLoadedEvent) => {
+        const textFromFileLoaded = fileLoadedEvent.target.result;
+        const json = JSON.parse(textFromFileLoaded.toString());
+        this.postMazes(json);
+        this.isSubmitted = false;
+      };
+      fileReader.readAsText(this.jsonFile, 'UTF-8');
+    } else {
+      this.uploadForm.reset();
+      this.uploadForm.controls['inputFile'].setValidators([Validators.required]);
+      this.uploadForm.get('inputFile').updateValueAndValidity();
+    }
+  }
 
-    fileReader.onload = (fileLoadedEvent) => {
-      const textFromFileLoaded = fileLoadedEvent.target.result;
-      const json = JSON.parse(textFromFileLoaded.toString());
-
-      this.mazeService.postMaze(json).subscribe((mazes) => {
+  private getMazes(): void {
+    this.mazeService.getListOfMazes().subscribe({
+      next: (mazes: IMaze[]) => {
         this.listOfMazes = mazes;
         this.isLoaded = true;
-      });
-    };
+      },
+      error: (error) => {
+        this.logger.error('Error getting mazes: ', error);
+      },
+    });
+  }
 
-    fileReader.readAsText(file, 'UTF-8');
+  private postMazes(json: string): void {
+    this.mazeService.postMaze(json).subscribe({
+      next: (mazes: IMaze[]) => {
+        this.listOfMazes = mazes;
+        this.isLoaded = true;
+      },
+      error: (error) => {
+        this.logger.error('Error uploading new maze: ', error);
+      },
+    });
   }
 }

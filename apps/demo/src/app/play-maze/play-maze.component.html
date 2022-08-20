@@ -2,4 +2,7 @@
 <div *ngIf="isLoaded">
   <valant-display-maze [maze]="maze"></valant-display-maze>
 </div>
+<div *ngIf="!isLoaded">
+  <valant-now-loading></valant-now-loading>
+</div>
 <valant-gamepad></valant-gamepad>
