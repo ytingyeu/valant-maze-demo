@@ -47,10 +47,11 @@ export module ValantDemoApiClient {
     getNextMovements(mazeId: number, currPos: ICell): Observable<IMovement[]> {
       const requestUri = this.baseUrl + '/Maze/NextAvailableMoves';
 
-      const queryParams = new HttpParams();
-      queryParams.append('mazeId', mazeId.toString());
-      queryParams.append('currRow', currPos.row.toString());
-      queryParams.append('currCol', currPos.col.toString());
+      const queryParams = new HttpParams()
+        .set('mazeId', mazeId.toString())
+        .set('currRow', currPos.row.toString())
+        .set('currCol', currPos.col.toString());
+
       return this.http.get<IMovement[]>(requestUri, { params: queryParams });
     }
 
