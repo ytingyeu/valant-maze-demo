@@ -1,1 +1,5 @@
-<p>gamepad works!</p>
+<div class="gamepad">
+  <div *ngFor="let movement of availableMoves" class="move-btns">
+    <button [name]="movement.name" (click)="onMoveClick($event)">{{movement.name}}</button>
+  </div>
+</div>
