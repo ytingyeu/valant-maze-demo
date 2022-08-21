@@ -66,7 +66,7 @@ namespace ValantDemoApi.Controllers
     }
 
     [HttpPost]
-    public async Task<ActionResult<MazeResponseDto[]>> PostMaze([FromBody] PostNewMazeDto mazeDto)
+    public async Task<ActionResult<MazeResponseDto[]>> postNewMaze([FromBody] PostNewMazeDto mazeDto)
     {
       try
       {
@@ -160,7 +160,7 @@ namespace ValantDemoApi.Controllers
 
       if (col < 0 || col > numOfCols)
       {
-        return true;
+        return false;
       }
 
       if (grpah[row][col] == "X")
@@ -193,7 +193,7 @@ namespace ValantDemoApi.Controllers
         { MoveEnum.Up.ToString(), new Cell (-1, 0) },
         { MoveEnum.Down.ToString(), new Cell (1, 0) },
         { MoveEnum.Left.ToString(), new Cell (0, -1) },
-        { MoveEnum.Right.ToString(), new Cell (0, 1 ) },
+        { MoveEnum.Right.ToString(), new Cell (0, 1) },
     };
   }
 }

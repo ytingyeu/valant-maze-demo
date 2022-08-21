@@ -25,18 +25,16 @@ namespace ValantDemoApi.Models
     {
       Id = maze.Id;
       UploadDate = maze.UploadDate;
-      GraphString = maze.GraphString;
-
       Start = new Cell(maze.StartRow, maze.StartCol);
       Exit = new Cell(maze.ExitRow, maze.ExitCol);
+      Graph = Shared.ShareFunctions.ConverGraphStringToGraph(maze.GraphString);
     }
-
 
     public int Id { get; set; }
     public string UploadDate { get; set; }
-    public string GraphString { get; set; }
     public Cell Start { get; set; }
     public Cell Exit { get; set; }
+    public string[][] Graph { get; set; }
   }
 
   public class PostNewMazeDto
