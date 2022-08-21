@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { IMaze } from '../_models/maze/maze';
 import { MazeService } from '../_services/maze.service';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LoggingService } from '../logging/logging.service';
 
 @Component({
@@ -58,7 +58,7 @@ export class AvailableMazesComponent implements OnInit {
       fileReader.onload = (fileLoadedEvent) => {
         const textFromFileLoaded = fileLoadedEvent.target.result;
         const json = JSON.parse(textFromFileLoaded.toString());
-        this.postMazes(json);
+        this.postNewMazes(json);
         this.isSubmitted = false;
       };
       fileReader.readAsText(this.jsonFile, 'UTF-8');
@@ -81,8 +81,8 @@ export class AvailableMazesComponent implements OnInit {
     });
   }
 
-  private postMazes(json: string): void {
-    this.mazeService.postMaze(json).subscribe({
+  private postNewMazes(json: string): void {
+    this.mazeService.postNewMaze(json).subscribe({
       next: (mazes: IMaze[]) => {
         this.listOfMazes = mazes;
         this.isLoaded = true;

@@ -11,13 +11,9 @@ namespace ValantDemoApi.Models
   {
     public int Id { get; set; }
     public string UploadDate { get; set; }
-
     public string GraphString { get; set; }
-
-
     public int StartRow { get; set; }
     public int StartCol { get; set; }
-
     public int ExitRow { get; set; }
     public int ExitCol { get; set; }   
   }
@@ -29,21 +25,19 @@ namespace ValantDemoApi.Models
     {
       Id = maze.Id;
       UploadDate = maze.UploadDate;
-      GraphString = maze.GraphString;
-
       Start = new Cell(maze.StartRow, maze.StartCol);
       Exit = new Cell(maze.ExitRow, maze.ExitCol);
+      Graph = Shared.ShareFunctions.ConverGraphStringToGraph(maze.GraphString);
     }
-
 
     public int Id { get; set; }
     public string UploadDate { get; set; }
-    public string GraphString { get; set; }
     public Cell Start { get; set; }
     public Cell Exit { get; set; }
+    public string[][] Graph { get; set; }
   }
 
-  public class MazePostDto
+  public class PostNewMazeDto
   {
     public string GraphString { get; set; }
     public Cell Start { get; set; }
@@ -61,7 +55,6 @@ namespace ValantDemoApi.Models
     public int Row { get; set; }
     public int Col { get; set; }
   }
-
 }
 
 

@@ -15,18 +15,28 @@ namespace ValantDemoApi.Shared
       return mockIdCounter++;
     }
 
-    public static List<List<string>> ConverGraphStringToGraph(string graphString)
+    public static string[][] ConverGraphStringToGraph(string graphString)
     {
-      List<List<string>> graph = new();
       string[] rows = graphString.Split('#');
 
-      for (int i = 0; i < rows.Length; i++)
+      // the last line also includes a '#',
+      // this causes after splitting, there is an empty string at rows[rows.Length]
+      // we want to ignore it
+      int numOfRows = rows.Length - 1;
+
+      string[][] graph = new string[numOfRows][];
+
+      for (int i = 0; i < numOfRows; i++)
       {
-        foreach (var symbol in rows)
-        {
-          graph[i].Add(symbol);
+        var temp = new List<string>();
+
+        foreach (var symbol in rows[i])
+        {          
+          temp.Add(symbol.ToString());
         }
+        graph[i] = temp.ToArray();
       }
+
       return graph;
     }
   }

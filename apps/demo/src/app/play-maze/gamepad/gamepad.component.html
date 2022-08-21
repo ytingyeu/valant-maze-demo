@@ -1,1 +1,8 @@
-<p>gamepad works!</p>
+<div class="gamepad">
+  <div *ngFor="let moveName of availableMoveNames" class="move-btns">
+    <button [name]="moveName" (click)="onMoveClick($event)">{{moveName}}</button>
+  </div>
+  <div class="other-btns">
+    <button (click)="onResetClick()">Reset Game</button>
+  </div>
+</div>
