@@ -39,6 +39,7 @@ export class PlayMazeComponent implements OnInit {
     this.graph[this.currPos.row][this.currPos.col] = mazeSymbols.space;
     this.currPos = { ...this.start };
     this.graph[this.currPos.row][this.currPos.col] = mazeSymbols.current;
+    this.graph[this.exit.row][this.exit.col] = mazeSymbols.exit;
     this.succeed = false;
     this.gameMessage = '';
   }
