@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ICell, IMaze, IMovement, mazeSymbols } from '../_models/maze/maze';
 import { ActivatedRoute } from '@angular/router';
 import { MazeService } from '../_services/maze.service';

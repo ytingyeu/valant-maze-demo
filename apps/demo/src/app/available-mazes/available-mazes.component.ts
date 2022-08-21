@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { IMaze } from '../_models/maze/maze';
 import { MazeService } from '../_services/maze.service';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LoggingService } from '../logging/logging.service';
 
 @Component({

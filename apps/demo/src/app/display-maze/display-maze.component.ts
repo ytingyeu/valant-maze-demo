@@ -1,6 +1,4 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { IMaze } from '../_models/maze/maze';
-import { Utils } from '../_Utils/utils';
 
 @Component({
   selector: 'valant-display-maze',
