@@ -10,8 +10,8 @@
 import { mergeMap as _observableMergeMap, catchError as _observableCatch } from 'rxjs/operators';
 import { Observable, throwError as _observableThrow, of as _observableOf } from 'rxjs';
 import { Injectable, Inject, Optional, InjectionToken } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpResponse, HttpResponseBase } from '@angular/common/http';
-import { IMaze } from '../_models/maze/maze';
+import { HttpClient, HttpHeaders, HttpParams, HttpResponse, HttpResponseBase } from '@angular/common/http';
+import { ICell, IMaze, IMovement } from '../_models/maze/maze';
 
 export module ValantDemoApiClient {
   export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
@@ -39,9 +39,19 @@ export module ValantDemoApiClient {
       return this.http.get<IMaze>(mazeUrl);
     }
 
-    postMaze(json: string): Observable<any> {
+    postNewMaze(json: string): Observable<any> {
       const mazeUrl = this.baseUrl + '/Maze';
       return this.http.post(mazeUrl, json);
+    }
+
+    getNextMovements(mazeId: number, currPos: ICell): Observable<IMovement[]> {
+      const requestUri = this.baseUrl + '/Maze/NextAvailableMoves';
+
+      const queryParams = new HttpParams();
+      queryParams.append('mazeId', mazeId.toString());
+      queryParams.append('currRow', currPos.row.toString());
+      queryParams.append('currCol', currPos.col.toString());
+      return this.http.get<IMovement[]>(requestUri, { params: queryParams });
     }
 
     /**
