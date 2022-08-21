@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ICell, IMaze, IMovement } from '../_models/maze/maze';
+import { ICell, IMaze, IMovement, mazeSymbols } from '../_models/maze/maze';
 import { ActivatedRoute } from '@angular/router';
 import { MazeService } from '../_services/maze.service';
 import { LoggingService } from '../logging/logging.service';
@@ -36,9 +36,9 @@ export class PlayMazeComponent implements OnInit {
   }
 
   resetGame() {
-    this.graph[this.currPos.row][this.currPos.col] = 'O';
+    this.graph[this.currPos.row][this.currPos.col] = mazeSymbols.space;
     this.currPos = { ...this.start };
-    this.graph[this.currPos.row][this.currPos.col] = 'C';
+    this.graph[this.currPos.row][this.currPos.col] = mazeSymbols.current;
     this.succeed = false;
     this.gameMessage = '';
   }
@@ -79,8 +79,8 @@ export class PlayMazeComponent implements OnInit {
     };
 
     if (this.isValidMove(newPos)) {
-      this.graph[this.currPos.row][this.currPos.col] = 'O';
-      this.graph[newPos.row][newPos.col] = 'C';
+      this.graph[this.currPos.row][this.currPos.col] = mazeSymbols.space;
+      this.graph[newPos.row][newPos.col] = mazeSymbols.current;
       this.currPos = newPos;
     }
 
@@ -105,7 +105,7 @@ export class PlayMazeComponent implements OnInit {
       return false;
     }
 
-    if (this.graph[row][col] == 'X') {
+    if (this.graph[row][col] == mazeSymbols.block) {
       return false;
     }
 

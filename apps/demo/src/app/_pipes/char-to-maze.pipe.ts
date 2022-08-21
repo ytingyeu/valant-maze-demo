@@ -1,22 +1,14 @@
 import { Pipe, PipeTransform } from '@angular/core';
-
+import { mazeDisplayDict } from '../_models/maze/maze';
 @Pipe({
   name: 'charToMaze',
 })
 export class CharToMazePipe implements PipeTransform {
   mazeHashMap: {};
 
-  constructor() {
-    this.mazeHashMap = {
-      S: '🐁',
-      C: '🐁',
-      E: '🧀',
-      O: ' ',
-      X: '⬛',
-    };
-  }
+  constructor() {}
 
-  transform(value: string): string {
-    return this.mazeHashMap[value];
+  transform(symbol: string): string {
+    return mazeDisplayDict.get(symbol);
   }
 }
