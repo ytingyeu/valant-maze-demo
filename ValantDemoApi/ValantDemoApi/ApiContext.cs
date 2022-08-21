@@ -15,7 +15,5 @@ namespace ValantDemoApi
     }
 
     public DbSet<Maze> Mazes { get; set; }
-
-    public DbSet<Game> Games { get; set; }
   }
 }
