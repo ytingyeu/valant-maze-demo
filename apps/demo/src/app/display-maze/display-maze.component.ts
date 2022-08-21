@@ -8,12 +8,9 @@ import { Utils } from '../_Utils/utils';
   styleUrls: ['./display-maze.component.less'],
 })
 export class DisplayMazeComponent implements OnInit {
-  @Input() maze!: IMaze;
-  graph: string[][] = [];
+  @Input() graph: string[][];
 
   constructor() {}
 
-  ngOnInit(): void {
-    this.graph = Utils.ConvertGraphStringToList(this.maze.graphString);
-  }
+  ngOnInit(): void {}
 }

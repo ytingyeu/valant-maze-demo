@@ -10,7 +10,7 @@
   </form>
   <ul class="available-mazes" *ngIf="isLoaded">
     <li *ngFor="let maze of listOfMazes" class="maze-entity">
-      <valant-display-maze [maze]="maze"></valant-display-maze>
+      <valant-display-maze [graph]="maze.graph"></valant-display-maze>
       <div>Upload date: {{maze.uploadDate}}</div>
       <a routerLink="/play-maze/{{maze.id}}">Play</a>
     </li>

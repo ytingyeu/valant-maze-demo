@@ -58,7 +58,7 @@ export class AvailableMazesComponent implements OnInit {
       fileReader.onload = (fileLoadedEvent) => {
         const textFromFileLoaded = fileLoadedEvent.target.result;
         const json = JSON.parse(textFromFileLoaded.toString());
-        this.postMazes(json);
+        this.postNewMazes(json);
         this.isSubmitted = false;
       };
       fileReader.readAsText(this.jsonFile, 'UTF-8');
@@ -81,8 +81,8 @@ export class AvailableMazesComponent implements OnInit {
     });
   }
 
-  private postMazes(json: string): void {
-    this.mazeService.postMaze(json).subscribe({
+  private postNewMazes(json: string): void {
+    this.mazeService.postNewMaze(json).subscribe({
       next: (mazes: IMaze[]) => {
         this.listOfMazes = mazes;
         this.isLoaded = true;
