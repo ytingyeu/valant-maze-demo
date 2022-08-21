@@ -9,7 +9,7 @@ using ValantDemoApi.Shared;
 
 namespace ValantDemoApi.Controllers
 {
-  //[ApiController]
+  [ApiController]
   [Route("[controller]")]
   public class MazeController : ControllerBase
   {
@@ -144,11 +144,11 @@ namespace ValantDemoApi.Controllers
     }
 
 
-    private bool IsValidMove(int row, int col, string direction, string[][] grpah)
+    private bool IsValidMove(int row, int col, string directionKey, string[][] grpah)
     {
-      var moveSteps = DirectionDict[direction];
-      row += moveSteps[0];
-      col += moveSteps[1];
+      var moveSteps = DirectionDict[directionKey];
+      row += moveSteps.Row;
+      col += moveSteps.Col;
 
       int numOfRows = grpah.Length;
       int numOfCols = grpah[0].Length;
@@ -174,13 +174,13 @@ namespace ValantDemoApi.Controllers
 
     public class Movement
     {
-      public Movement(string name, int[] direction)
+      public Movement(string name, Cell direction)
       {
         Name = name;
         Direction = direction;
       }
       public string Name { get; set; }
-      public int[] Direction { get; set; }
+      public Cell Direction { get; set; }
     }
 
     private enum MoveEnum
@@ -188,12 +188,12 @@ namespace ValantDemoApi.Controllers
       Up, Down, Left, Right
     }
 
-    private Dictionary<string, int[]> DirectionDict => new Dictionary<string, int[]>()
+    private static Dictionary<string, Cell> DirectionDict => new()
     {
-        { MoveEnum.Up.ToString(), new int[] {-1, 0 } },
-        { MoveEnum.Down.ToString(), new int[] {1, 0 } },
-        { MoveEnum.Left.ToString(), new int[] {0, -1 } },
-        { MoveEnum.Right.ToString(), new int[] {0, 1 } },
+        { MoveEnum.Up.ToString(), new Cell (-1, 0) },
+        { MoveEnum.Down.ToString(), new Cell (1, 0) },
+        { MoveEnum.Left.ToString(), new Cell (0, -1) },
+        { MoveEnum.Right.ToString(), new Cell (0, 1 ) },
     };
   }
 }
