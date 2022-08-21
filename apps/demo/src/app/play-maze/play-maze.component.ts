@@ -12,8 +12,9 @@ import { LoggingService } from '../logging/logging.service';
 export class PlayMazeComponent implements OnInit {
   currPos: ICell;
   exit: ICell;
-  graph: string[][];
-  availableMoves: IMovement[];
+  graph: string[][] = [];
+  availableMoveNames: string[] = [];
+  directionDict: Map<string, ICell> = new Map<string, ICell>();
   isLoaded: boolean = false;
   succeed: boolean = false;
 
@@ -26,8 +27,10 @@ export class PlayMazeComponent implements OnInit {
   }
 
   updateSelectedMove(nextMoveName: string) {
-    const movement = this.availableMoves.find((movement) => movement.name === nextMoveName);
-    this.performMove(movement);
+    if (!this.succeed) {
+      const direction = this.directionDict.get(nextMoveName);
+      this.performMove(direction);
+    }
   }
 
   private initMaze(id: number): void {
@@ -48,7 +51,10 @@ export class PlayMazeComponent implements OnInit {
   private getNextAvailableMoves() {
     this.mazeService.getNextAvailableMoves().subscribe({
       next: (resNextMoves: IMovement[]) => {
-        this.availableMoves = resNextMoves;
+        resNextMoves.forEach((move) => {
+          this.availableMoveNames.push(move.name);
+          this.directionDict.set(move.name, move.direction);
+        });
       },
       error: (error) => {
         this.logger.error('Error getting next availabe moves: ', error);
@@ -56,10 +62,10 @@ export class PlayMazeComponent implements OnInit {
     });
   }
 
-  private performMove(movement: IMovement): void {
+  private performMove(direction: ICell): void {
     const newPos = {
-      row: this.currPos.row + movement.direction.row,
-      col: this.currPos.col + movement.direction.col,
+      row: this.currPos.row + direction.row,
+      col: this.currPos.col + direction.col,
     };
 
     if (this.isValidMove(newPos)) {

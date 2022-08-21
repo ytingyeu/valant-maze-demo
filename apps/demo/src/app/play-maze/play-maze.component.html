@@ -1,7 +1,7 @@
 <h2>Play Maze</h2>
 <div *ngIf="isLoaded">
   <valant-display-maze [maze]="maze" [graph]="graph"></valant-display-maze>
-  <valant-gamepad (updateSelectedMove)="updateSelectedMove($event)" [availableMoves]="availableMoves"></valant-gamepad>
+  <valant-gamepad (updateSelectedMove)="updateSelectedMove($event)" [availableMoveNames]="availableMoveNames"></valant-gamepad>
 </div>
 <div *ngIf="!isLoaded">
   <valant-now-loading></valant-now-loading>

@@ -7,7 +7,7 @@ import { IMovement } from '../../_models/maze/maze';
   styleUrls: ['./gamepad.component.less'],
 })
 export class GamepadComponent implements OnInit {
-  @Input() availableMoves: IMovement[];
+  @Input() availableMoveNames: string[];
   @Output() updateSelectedMove = new EventEmitter<IMovement>();
 
   constructor() {}

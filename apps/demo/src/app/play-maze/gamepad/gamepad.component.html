@@ -1,5 +1,5 @@
 <div class="gamepad">
-  <div *ngFor="let movement of availableMoves" class="move-btns">
-    <button [name]="movement.name" (click)="onMoveClick($event)">{{movement.name}}</button>
+  <div *ngFor="let moveName of availableMoveNames" class="move-btns">
+    <button [name]="moveName" (click)="onMoveClick($event)">{{moveName}}</button>
   </div>
 </div>
