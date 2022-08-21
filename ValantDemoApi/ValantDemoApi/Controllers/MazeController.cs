@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ValantDemoApi.Models;
+using ValantDemoApi.Shared;
 
 namespace ValantDemoApi.Controllers
 {
@@ -13,7 +14,7 @@ namespace ValantDemoApi.Controllers
   public class MazeController : ControllerBase
   {
     private readonly ILogger<MazeController> _logger;
-    private readonly ApiContext _context;    
+    private readonly ApiContext _context;
 
     public MazeController(ILogger<MazeController> logger, ApiContext context)
     {
@@ -30,13 +31,13 @@ namespace ValantDemoApi.Controllers
 
         if (maze == null)
         {
-          return NotFound();
+          return NotFound($"Could not find maze with id {id}");
         }
 
         var mazeDto = new MazeResponseDto(maze);
         return Ok(mazeDto);
       }
-      catch(Exception ex)
+      catch (Exception ex)
       {
         _logger.LogError("Error retrieving maze by Id.", ex);
         return StatusCode(500);
@@ -53,7 +54,7 @@ namespace ValantDemoApi.Controllers
         foreach (var maze in _context.Mazes)
         {
           listOfMazeDTO.Add(new MazeResponseDto(maze));
-        }        
+        }
       }
       catch (Exception ex)
       {
@@ -65,7 +66,7 @@ namespace ValantDemoApi.Controllers
     }
 
     [HttpPost]
-    public async Task<ActionResult<MazeResponseDto[]>> PostMaze([FromBody] MazePostDto mazeDto)
+    public async Task<ActionResult<MazeResponseDto[]>> PostMaze([FromBody] PostNewMazeDto mazeDto)
     {
       try
       {
@@ -83,11 +84,11 @@ namespace ValantDemoApi.Controllers
         _context.Mazes.Add(newMaze);
         await _context.SaveChangesAsync();
       }
-      catch(Exception ex)
+      catch (Exception ex)
       {
         _logger.LogError("Error adding new maze.", ex);
         return StatusCode(500);
-      }      
+      }
 
       var listOfMazeDTO = new List<MazeResponseDto>();
 
@@ -98,7 +99,7 @@ namespace ValantDemoApi.Controllers
           listOfMazeDTO.Add(new MazeResponseDto(maze));
         }
       }
-      catch(Exception ex)
+      catch (Exception ex)
       {
         _logger.LogError("Error retrieving mazes.", ex);
         return StatusCode(500);
@@ -106,5 +107,93 @@ namespace ValantDemoApi.Controllers
 
       return Ok(listOfMazeDTO);
     }
+
+    [HttpGet]
+    [Route("NextAvailableMoves")]
+    public async Task<ActionResult<IEnumerable<Movement>>> GetNextAvailableMoves(int mazeId, int currRow, int currCol)
+    {
+      Maze maze;
+
+      try
+      {
+        maze = await _context.Mazes.FindAsync(mazeId);
+
+        if (maze == null)
+        {
+          return NotFound($"Could not find maze with id {mazeId}");
+        }
+      }
+      catch (Exception ex)
+      {
+        _logger.LogError("Error retrieving maze by Id.", ex);
+        return StatusCode(500);
+      }
+
+      var moveList = new List<Movement>();
+      var graph = ShareFunctions.ConverGraphStringToGraph(maze.GraphString);
+
+      foreach (string direction in Enum.GetNames(typeof(MoveEnum)))
+      {
+        if (IsValidMove(currRow, currCol, direction, graph))
+        {
+          moveList.Add(new Movement(direction, DirectionDict[direction]));
+        }
+      }
+
+      return moveList;
+    }
+
+
+    private bool IsValidMove(int row, int col, string direction, string[][] grpah)
+    {
+      var moveSteps = DirectionDict[direction];
+      row += moveSteps[0];
+      col += moveSteps[1];
+
+      int numOfRows = grpah.Length;
+      int numOfCols = grpah[0].Length;
+
+      if (row < 0 || row > numOfRows)
+      {
+        return false;
+      }
+
+      if (col < 0 || col > numOfCols)
+      {
+        return true;
+      }
+
+      if (grpah[row][col] == "X")
+      {
+        return false;
+      }
+
+      return true;
+
+    }
+
+    public class Movement
+    {
+      public Movement(string name, int[] direction)
+      {
+        Name = name;
+        Direction = direction;
+      }
+      public string Name { get; set; }
+      public int[] Direction { get; set; }
+    }
+
+    private enum MoveEnum
+    {
+      Up, Down, Left, Right
+    }
+
+    private Dictionary<string, int[]> DirectionDict => new Dictionary<string, int[]>()
+    {
+        { MoveEnum.Up.ToString(), new int[] {-1, 0 } },
+        { MoveEnum.Down.ToString(), new int[] {1, 0 } },
+        { MoveEnum.Left.ToString(), new int[] {0, -1 } },
+        { MoveEnum.Right.ToString(), new int[] {0, 1 } },
+    };
   }
 }

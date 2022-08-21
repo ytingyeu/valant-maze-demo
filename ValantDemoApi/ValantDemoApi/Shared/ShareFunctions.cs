@@ -15,18 +15,26 @@ namespace ValantDemoApi.Shared
       return mockIdCounter++;
     }
 
-    public static List<List<string>> ConverGraphStringToGraph(string graphString)
+    public static string[][] ConverGraphStringToGraph(string graphString)
     {
-      List<List<string>> graph = new();
       string[] rows = graphString.Split('#');
+      
+      int numOfRows = rows.Length;
+      //int numOfCols = rows[0].Length;
+
+      string[][] graph = new string[numOfRows][];
 
       for (int i = 0; i < rows.Length; i++)
       {
+        var temp = new List<string>();
+
         foreach (var symbol in rows)
         {
-          graph[i].Add(symbol);
+          temp.Add(symbol);
         }
+        graph[i] = temp.ToArray();
       }
+
       return graph;
     }
   }

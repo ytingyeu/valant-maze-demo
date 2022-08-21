@@ -11,13 +11,9 @@ namespace ValantDemoApi.Models
   {
     public int Id { get; set; }
     public string UploadDate { get; set; }
-
     public string GraphString { get; set; }
-
-
     public int StartRow { get; set; }
     public int StartCol { get; set; }
-
     public int ExitRow { get; set; }
     public int ExitCol { get; set; }   
   }
@@ -43,7 +39,7 @@ namespace ValantDemoApi.Models
     public Cell Exit { get; set; }
   }
 
-  public class MazePostDto
+  public class PostNewMazeDto
   {
     public string GraphString { get; set; }
     public Cell Start { get; set; }
@@ -61,7 +57,6 @@ namespace ValantDemoApi.Models
     public int Row { get; set; }
     public int Col { get; set; }
   }
-
 }
 
 
