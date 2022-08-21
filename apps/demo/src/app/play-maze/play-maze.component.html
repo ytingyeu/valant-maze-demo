@@ -2,7 +2,8 @@
 <div *ngIf="isLoaded" class="maze-gamepad-wrapper">
   <valant-display-maze [maze]="maze" [graph]="graph"></valant-display-maze>
   <div class="game-message">{{gameMessage}}</div>
-  <valant-gamepad (updateSelectedMove)="updateSelectedMove($event)" [availableMoveNames]="availableMoveNames"></valant-gamepad>
+  <valant-gamepad (updateSelectedMove)="updateSelectedMove($event)" (resetGame)="resetGame()"
+    [availableMoveNames]="availableMoveNames"></valant-gamepad>
 </div>
 <div *ngIf="!isLoaded">
   <valant-now-loading></valant-now-loading>

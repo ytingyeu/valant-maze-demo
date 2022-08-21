@@ -10,8 +10,9 @@ import { LoggingService } from '../logging/logging.service';
   styleUrls: ['./play-maze.component.less'],
 })
 export class PlayMazeComponent implements OnInit {
-  currPos: ICell;
+  start: ICell;
   exit: ICell;
+  currPos: ICell;
   graph: string[][] = [];
   availableMoveNames: string[] = [];
   gameMessage: string = '';
@@ -34,13 +35,21 @@ export class PlayMazeComponent implements OnInit {
     }
   }
 
+  resetGame() {
+    this.graph[this.currPos.row][this.currPos.col] = 'O';
+    this.currPos = { ...this.start };
+    this.graph[this.currPos.row][this.currPos.col] = 'C';
+    this.succeed = false;
+    this.gameMessage = '';
+  }
+
   private initMaze(id: number): void {
     this.mazeService.getMazeById(id).subscribe({
       next: (maze: IMaze) => {
-        // console.log(maze);
+        this.start = maze.start;
         this.exit = maze.exit;
-        this.graph = maze.graph;
-        this.currPos = maze.start;
+        this.graph = [...maze.graph];
+        this.currPos = { ...maze.start };
         this.isLoaded = true;
       },
       error: (error) => {
