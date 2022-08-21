@@ -18,13 +18,15 @@ namespace ValantDemoApi.Shared
     public static string[][] ConverGraphStringToGraph(string graphString)
     {
       string[] rows = graphString.Split('#');
-      
-      int numOfRows = rows.Length;
-      //int numOfCols = rows[0].Length;
+
+      // the last line also includes a '#',
+      // this causes after splitting, there is an empty string at rows[rows.Length]
+      // we want to ignore it
+      int numOfRows = rows.Length - 1;
 
       string[][] graph = new string[numOfRows][];
 
-      for (int i = 0; i < rows.Length; i++)
+      for (int i = 0; i < numOfRows; i++)
       {
         var temp = new List<string>();
 

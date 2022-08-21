@@ -153,12 +153,12 @@ namespace ValantDemoApi.Controllers
       int numOfRows = grpah.Length;
       int numOfCols = grpah[0].Length;
 
-      if (row < 0 || row > numOfRows)
+      if (row < 0 || row >= numOfRows)
       {
         return false;
       }
 
-      if (col < 0 || col > numOfCols)
+      if (col < 0 || col >= numOfCols)
       {
         return false;
       }
