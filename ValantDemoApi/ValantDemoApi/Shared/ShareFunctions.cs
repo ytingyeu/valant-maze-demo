@@ -28,9 +28,9 @@ namespace ValantDemoApi.Shared
       {
         var temp = new List<string>();
 
-        foreach (var symbol in rows)
-        {
-          temp.Add(symbol);
+        foreach (var symbol in rows[i])
+        {          
+          temp.Add(symbol.ToString());
         }
         graph[i] = temp.ToArray();
       }
