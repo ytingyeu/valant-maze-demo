@@ -2,4 +2,7 @@
   <div *ngFor="let moveName of availableMoveNames" class="move-btns">
     <button [name]="moveName" (click)="onMoveClick($event)">{{moveName}}</button>
   </div>
+  <div class="other-btns">
+    <button>Reset Game</button>
+  </div>
 </div>

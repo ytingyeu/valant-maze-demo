@@ -14,6 +14,7 @@ export class PlayMazeComponent implements OnInit {
   exit: ICell;
   graph: string[][] = [];
   availableMoveNames: string[] = [];
+  gameMessage: string = '';
   directionDict: Map<string, ICell> = new Map<string, ICell>();
   isLoaded: boolean = false;
   succeed: boolean = false;
@@ -76,6 +77,7 @@ export class PlayMazeComponent implements OnInit {
 
     if (this.currPos.row === this.exit.row && this.currPos.col === this.exit.col) {
       this.succeed = true;
+      this.gameMessage = 'Congrats! You did it!';
     }
   }
 
