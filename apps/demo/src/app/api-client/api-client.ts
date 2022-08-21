@@ -44,15 +44,9 @@ export module ValantDemoApiClient {
       return this.http.post(mazeUrl, json);
     }
 
-    getNextMovements(mazeId: number, currPos: ICell): Observable<IMovement[]> {
+    getNextMovements(): Observable<IMovement[]> {
       const requestUri = this.baseUrl + '/Maze/NextAvailableMoves';
-
-      const queryParams = new HttpParams()
-        .set('mazeId', mazeId.toString())
-        .set('currRow', currPos.row.toString())
-        .set('currCol', currPos.col.toString());
-
-      return this.http.get<IMovement[]>(requestUri, { params: queryParams });
+      return this.http.get<IMovement[]>(requestUri);
     }
 
     /**

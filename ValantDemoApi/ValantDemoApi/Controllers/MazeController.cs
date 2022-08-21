@@ -110,34 +110,13 @@ namespace ValantDemoApi.Controllers
 
     [HttpGet]
     [Route("NextAvailableMoves")]
-    public async Task<ActionResult<IEnumerable<Movement>>> GetNextAvailableMoves(int mazeId, int currRow, int currCol)
+    public IEnumerable<Movement> GetNextAvailableMoves()
     {
-      Maze maze;
-
-      try
-      {
-        maze = await _context.Mazes.FindAsync(mazeId);
-
-        if (maze == null)
-        {
-          return NotFound($"Could not find maze with id {mazeId}");
-        }
-      }
-      catch (Exception ex)
-      {
-        _logger.LogError("Error retrieving maze by Id.", ex);
-        return StatusCode(500);
-      }
-
       var moveList = new List<Movement>();
-      var graph = ShareFunctions.ConverGraphStringToGraph(maze.GraphString);
 
       foreach (string direction in Enum.GetNames(typeof(MoveEnum)))
       {
-        if (IsValidMove(currRow, currCol, direction, graph))
-        {
           moveList.Add(new Movement(direction, DirectionDict[direction]));
-        }
       }
 
       return moveList;

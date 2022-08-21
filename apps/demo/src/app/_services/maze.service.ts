@@ -28,7 +28,7 @@ export class MazeService {
     return this._apiClient.postNewMaze(json);
   }
 
-  getNextAvailableMoves(mazeId: number, currPos: ICell): Observable<IMovement[]> {
-    return this._apiClient.getNextMovements(mazeId, currPos);
+  getNextAvailableMoves(): Observable<IMovement[]> {
+    return this._apiClient.getNextMovements();
   }
 }

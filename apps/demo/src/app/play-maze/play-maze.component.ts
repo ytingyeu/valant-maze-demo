@@ -10,31 +10,34 @@ import { LoggingService } from '../logging/logging.service';
   styleUrls: ['./play-maze.component.less'],
 })
 export class PlayMazeComponent implements OnInit {
-  maze: IMaze | undefined;
-  graph: string[][];
-  isLoaded: boolean = false;
   currPos: ICell;
+  exit: ICell;
+  graph: string[][];
   availableMoves: IMovement[];
+  isLoaded: boolean = false;
+  succeed: boolean = false;
 
   constructor(private logger: LoggingService, private route: ActivatedRoute, private mazeService: MazeService) {}
 
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
     this.initMaze(id);
+    this.getNextAvailableMoves();
+  }
+
+  updateSelectedMove(nextMoveName: string) {
+    const movement = this.availableMoves.find((movement) => movement.name === nextMoveName);
+    this.performMove(movement);
   }
 
   private initMaze(id: number): void {
     this.mazeService.getMazeById(id).subscribe({
       next: (maze: IMaze) => {
         // console.log(maze);
-        this.maze = maze;
+        this.exit = maze.exit;
         this.graph = maze.graph;
-        this.currPos = {
-          row: maze.start.row,
-          col: maze.start.col,
-        };
-
-        this.getNextAvailableMoves();
+        this.currPos = maze.start;
+        this.isLoaded = true;
       },
       error: (error) => {
         this.logger.error('Error getting mazes: ', error);
@@ -43,10 +46,9 @@ export class PlayMazeComponent implements OnInit {
   }
 
   private getNextAvailableMoves() {
-    this.mazeService.getNextAvailableMoves(this.maze.id, this.currPos).subscribe({
+    this.mazeService.getNextAvailableMoves().subscribe({
       next: (resNextMoves: IMovement[]) => {
         this.availableMoves = resNextMoves;
-        this.isLoaded = true;
       },
       error: (error) => {
         this.logger.error('Error getting next availabe moves: ', error);
@@ -54,19 +56,42 @@ export class PlayMazeComponent implements OnInit {
     });
   }
 
-  updateSelectedMove(nextMoveName: string) {
-    console.log(`Parent receives ${nextMoveName}`);
-    const movement = this.availableMoves.find((movement) => movement.name === nextMoveName);
-    console.log(movement);
-
+  private performMove(movement: IMovement): void {
     const newPos = {
       row: this.currPos.row + movement.direction.row,
       col: this.currPos.col + movement.direction.col,
     };
 
-    this.graph[this.currPos.row][this.currPos.col] = 'O';
-    this.graph[newPos.row][newPos.col] = 'C';
-    this.currPos = newPos;
-    this.getNextAvailableMoves();
+    if (this.isValidMove(newPos)) {
+      this.graph[this.currPos.row][this.currPos.col] = 'O';
+      this.graph[newPos.row][newPos.col] = 'C';
+      this.currPos = newPos;
+    }
+
+    if (this.currPos.row === this.exit.row && this.currPos.col === this.exit.col) {
+      this.succeed = true;
+    }
+  }
+
+  private isValidMove(newPos: ICell): boolean {
+    const numOfRows = this.graph.length;
+    const numOfCols = this.graph[0].length;
+
+    const row = newPos.row;
+    const col = newPos.col;
+
+    if (row < 0 || row >= numOfRows) {
+      return false;
+    }
+
+    if (col < 0 || col >= numOfCols) {
+      return false;
+    }
+
+    if (this.graph[row][col] == 'X') {
+      return false;
+    }
+
+    return true;
   }
 }
