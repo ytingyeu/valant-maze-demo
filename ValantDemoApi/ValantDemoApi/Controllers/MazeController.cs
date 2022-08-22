@@ -126,6 +126,17 @@ namespace ValantDemoApi.Controllers
       return moveList;
     }
 
+    public class Movement
+    {
+      public Movement(string name, Cell direction)
+      {
+        Name = name;
+        Direction = direction;
+      }
+      public string Name { get; set; }
+      public Cell Direction { get; set; }
+    }
+
     private enum MoveEnum
     {
       Up, Down, Left, Right

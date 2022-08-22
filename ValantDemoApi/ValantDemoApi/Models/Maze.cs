@@ -20,7 +20,7 @@ namespace ValantDemoApi.Models
 
   public class MazeResponseDto
   {
-
+    public MazeResponseDto() { }
     public MazeResponseDto(Maze maze)
     {
       Id = maze.Id;
