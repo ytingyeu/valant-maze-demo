@@ -1,7 +1,7 @@
-<form [formGroup]="uploadForm" (ngSubmit)="onSubmit()">
+<form [formGroup]="uploadForm" (ngSubmit)="onSubmit()" class="upload-form">
   <input type="file" name="inputFile" (change)="onFileSelect($event)" formControlName="inputFile" accept="text/plain" />
   <button type="submit">Upload</button>
-  <div *ngIf="isSubmitted && fc.inputFile.errors">
-    Required
+  <div *ngIf="isSubmitted && fc.inputFile.errors" class="input-validate-msg">
+    *Required
   </div>
 </form>
