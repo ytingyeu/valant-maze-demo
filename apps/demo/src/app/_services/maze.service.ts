@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
-import { ICell, IMaze, IMovement } from '../_models/maze/maze';
+import { ICell, IMaze, IMovement, INewMaze } from '../_models/maze/maze';
 import { MOCK_MAZES } from '../_models/maze/mock-mazes';
 import { HttpClient } from '@angular/common/http';
 import { ValantDemoApiClient } from '../api-client/api-client';
@@ -24,7 +24,7 @@ export class MazeService {
     return this._apiClient.getMazeById(id);
   }
 
-  postNewMaze(json: string): Observable<IMaze[]> {
+  postNewMaze(json: INewMaze): Observable<IMaze[]> {
     return this._apiClient.postNewMaze(json);
   }
 

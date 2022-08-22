@@ -2,7 +2,7 @@
 <div>
   <form [formGroup]="uploadForm" (ngSubmit)="onSubmit()">
     <input type="file" name="inputFile" (change)="onFileSelect($event)" formControlName="inputFile"
-      accept="application/json" />
+      accept="text/plain" />
     <button type="submit">Upload</button>
     <div *ngIf="isSubmitted && fc.inputFile.errors">
       Required
