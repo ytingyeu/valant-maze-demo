@@ -66,13 +66,13 @@ namespace ValantDemoApi.Controllers
     }
 
     [HttpPost]
-    public async Task<ActionResult<MazeResponseDto[]>> postNewMaze([FromBody] PostNewMazeDto mazeDto)
+    public async Task<ActionResult<MazeResponseDto[]>> PostNewMaze([FromBody] PostNewMazeDto mazeDto)
     {
       try
       {
         var newMaze = new Maze
         {
-          Id = Shared.ShareFunctions.GenerateMockMazeId(),
+          Id = ShareFunctions.GenerateMockMazeId(),
           UploadDate = DateTime.UtcNow.ToString(),
           GraphString = mazeDto.GraphString,
           StartRow = mazeDto.Start.Row,
@@ -120,35 +120,6 @@ namespace ValantDemoApi.Controllers
       }
 
       return moveList;
-    }
-
-
-    private bool IsValidMove(int row, int col, string directionKey, string[][] grpah)
-    {
-      var moveSteps = DirectionDict[directionKey];
-      row += moveSteps.Row;
-      col += moveSteps.Col;
-
-      int numOfRows = grpah.Length;
-      int numOfCols = grpah[0].Length;
-
-      if (row < 0 || row >= numOfRows)
-      {
-        return false;
-      }
-
-      if (col < 0 || col >= numOfCols)
-      {
-        return false;
-      }
-
-      if (grpah[row][col] == "X")
-      {
-        return false;
-      }
-
-      return true;
-
     }
 
     public class Movement
