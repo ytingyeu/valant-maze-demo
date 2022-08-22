@@ -83,29 +83,33 @@ namespace ValantDemoApi.Controllers
 
         _context.Mazes.Add(newMaze);
         await _context.SaveChangesAsync();
+
+        return CreatedAtAction(nameof(GetMazeById), new { id = newMaze.Id }, new MazeResponseDto(newMaze));
       }
-      catch (Exception ex)
+      catch (DbUpdateException ex)
       {
         _logger.LogError("Error adding new maze.", ex);
         return StatusCode(500);
       }
 
-      var listOfMazeDTO = new List<MazeResponseDto>();
 
-      try
-      {
-        foreach (var maze in _context.Mazes)
-        {
-          listOfMazeDTO.Add(new MazeResponseDto(maze));
-        }
-      }
-      catch (Exception ex)
-      {
-        _logger.LogError("Error retrieving mazes.", ex);
-        return StatusCode(500);
-      }
 
-      return Ok(listOfMazeDTO);
+      //var listOfMazeDTO = new List<MazeResponseDto>();
+
+      //try
+      //{
+      //  foreach (var maze in _context.Mazes)
+      //  {
+      //    listOfMazeDTO.Add(new MazeResponseDto(maze));
+      //  }
+      //}
+      //catch (Exception ex)
+      //{
+      //  _logger.LogError("Error retrieving mazes.", ex);
+      //  return StatusCode(500);
+      //}
+
+      //return Ok(listOfMazeDTO);
     }
 
     [HttpGet]
