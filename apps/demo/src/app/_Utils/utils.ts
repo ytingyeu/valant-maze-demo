@@ -1,5 +1,7 @@
+import { ICell, mazeSymbols } from '../_models/maze/maze';
+
 export class Utils {
-  public static ConvertGraphStringToList(graphString: string) {
+  public static convertGraphStringToList(graphString: string) {
     const graph: string[][] = [];
 
     graphString.split('#').forEach((row) => {
@@ -7,5 +9,34 @@ export class Utils {
     });
 
     return graph;
+  }
+
+  public static getStartAndExit(graphString: string): [ICell, ICell] {
+    let start: ICell;
+    let exit: ICell;
+
+    graphString.split('#').forEach((row: string, rowIdx: number) => {
+      row.split('').forEach((symbol: string, colIdx: number) => {
+        if (symbol == mazeSymbols.start) {
+          start = {
+            row: rowIdx,
+            col: colIdx,
+          };
+        }
+
+        if (symbol == mazeSymbols.exit) {
+          exit = {
+            row: rowIdx,
+            col: colIdx,
+          };
+        }
+
+        if (start !== undefined && exit !== undefined) {
+          return;
+        }
+      });
+    });
+
+    return [start, exit];
   }
 }

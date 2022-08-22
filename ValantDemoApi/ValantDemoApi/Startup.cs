@@ -42,10 +42,10 @@ namespace ValantDemoApi
         app.UseDeveloperExceptionPage();
         app.UseSwagger();
         app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ValantDemoApi v1"));
-      }
 
-      var context = serviceProvider.GetService<ApiContext>();
-      AddTestData(context);
+        var context = serviceProvider.GetService<ApiContext>();
+        AddTestData(context);
+      }
 
       app.UseRouting();
       app.UseCors(x => x

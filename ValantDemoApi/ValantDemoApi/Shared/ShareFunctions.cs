@@ -19,7 +19,7 @@ namespace ValantDemoApi.Shared
     {
       string[] rows = graphString.Split('#');
 
-      // the last line also includes a '#',
+      // the last line also includes a '#' as end-of-row,
       // this causes after splitting, there is an empty string at rows[rows.Length]
       // we want to ignore it
       int numOfRows = rows.Length - 1;
