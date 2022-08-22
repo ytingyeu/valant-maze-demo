@@ -8,11 +8,21 @@ namespace ValantDemoApi.Shared
   public class ShareFunctions
   {
 
-    private static int mockIdCounter = 14;
+    private static int mockMazeIdCounter = 14;
+
+    public static int GetCurrentMockMazeId()
+    {
+      return mockMazeIdCounter;
+    }
+
+    public static int GetLastCreatedMockMazeId()
+    {
+      return mockMazeIdCounter - 1;
+    }
 
     public static int GenerateMockMazeId()
-    {      
-      return mockIdCounter++;
+    {
+      return mockMazeIdCounter++;
     }
 
     public static string[][] ConverGraphStringToGraph(string graphString)
@@ -31,7 +41,7 @@ namespace ValantDemoApi.Shared
         var temp = new List<string>();
 
         foreach (var symbol in rows[i])
-        {          
+        {
           temp.Add(symbol.ToString());
         }
         graph[i] = temp.ToArray();
