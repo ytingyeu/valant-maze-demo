@@ -33,10 +33,19 @@ namespace ValantDemoApi.MockData
         ExitRow = 6,
         ExitCol = 2
       };
+
+      NewMazeRequest = new PostNewMazeDto
+      {
+        GraphString = "XOXXXXXXXX#OOOXOOOOEX#OXOOOXXOOO#XXOXOXOXXO#OOOOOOOXXO#OXXOXXSXXO#OOOOXXXXXX#",
+        Start = new Cell(5, 6),
+        Exit = new Cell(1, 8)
+      };
+
     }
 
     public Maze TestMaze1 { get; set; }
     public Maze TestMaze2 { get; set; }
+    public PostNewMazeDto NewMazeRequest { get; set; }
   }
 }
 
