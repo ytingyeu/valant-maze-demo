@@ -1,4 +1,6 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ValantDemoApiClient } from '../api-client/api-client';
 
 import { AvailableMazesComponent } from './available-mazes.component';
 
@@ -8,7 +10,9 @@ describe('AvailableMazesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AvailableMazesComponent ]
+      declarations: [ AvailableMazesComponent ],
+      imports: [HttpClientTestingModule],
+      providers: [ValantDemoApiClient.Client],
     })
     .compileComponents();
   });
