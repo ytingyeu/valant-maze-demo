@@ -9,13 +9,18 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using NUnit.Framework;
 using ValantDemoApi.MockData;
-using ValantDemoApi.Models;
+using ValantDemoApi.ValantMaze;
 using ValantDemoApi.Shared;
+using Microsoft.Extensions.Logging;
+using Moq;
+using Microsoft.EntityFrameworkCore;
+using System.Web.Http.Results;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ValantDemoApi.Tests
 {
   [TestFixture]
-  public class ValantDemoApiTests
+  public class TestsViaHttpClient
   {
     private HttpClient _client;
     private MockMazes _mockMazes;
@@ -106,6 +111,115 @@ namespace ValantDemoApi.Tests
       content.Graph.Should().BeEquivalentTo(expectGraph);
       Assert.IsNotNull(content.UploadDate);
       Assert.IsNotEmpty(content.UploadDate);
+    }
+  }
+
+  [TestFixture]
+  public class TestControllers
+  {
+    private MockMazes _mockMazes;
+    private ILogger<MazeController> _logger;
+    private Random _rnd;
+
+    [OneTimeSetUp]
+    public void Setup()
+    {
+      _mockMazes = new MockMazes();
+      _logger = new Mock<ILogger<MazeController>>().Object;
+      _rnd = new Random();
+    }
+
+    [Test]
+    public void ControllerShouldReturnAllAvailableMazes()
+    {
+      var options = new DbContextOptionsBuilder<ApiContext>()
+        .UseInMemoryDatabase(databaseName: $"TestContext{_rnd.Next()}")
+        .Options;
+
+      using (var context = new ApiContext(options))
+      {
+        context.Mazes.Add(_mockMazes.TestMaze1);
+        context.Mazes.Add(_mockMazes.TestMaze2);
+        context.SaveChanges();
+      }
+
+      using (var context = new ApiContext(options))
+      {
+        var mockRepository = new MazeRepository(context);
+        MazeController controller = new(_logger, mockRepository);
+
+        var actionResult = controller.GetAllMazes();
+        var contentResult = (actionResult.Result as OkObjectResult).Value;
+
+        var expectContent = new MazeResponseDto[] {
+            new MazeResponseDto(_mockMazes.TestMaze1),
+            new MazeResponseDto(_mockMazes.TestMaze2)
+          };
+
+        Assert.NotNull(contentResult);
+        Assert.IsAssignableFrom<List<MazeResponseDto>>(contentResult);
+
+        var resContent = (List<MazeResponseDto>)contentResult;
+        resContent.Should().BeEquivalentTo(expectContent);
+
+      }
+    }
+
+    [Test]
+    public async Task ControllerShouldReturnMazeByIdIfExists()
+    {
+      var options = new DbContextOptionsBuilder<ApiContext>()
+        .UseInMemoryDatabase(databaseName: $"TestContext{_rnd.Next()}")
+        .Options;
+
+      using (var context = new ApiContext(options))
+      {
+        context.Mazes.Add(_mockMazes.TestMaze1);
+        context.Mazes.Add(_mockMazes.TestMaze2);
+        context.SaveChanges();
+      }
+
+      using (var context = new ApiContext(options))
+      {
+        var mockRepository = new MazeRepository(context);
+        MazeController controller = new(_logger, mockRepository);
+
+        var actionResult = await controller.GetMazeById(_mockMazes.TestMaze1.Id);
+        var contentResult = (actionResult.Result as OkObjectResult).Value;
+
+        var expectContent = new MazeResponseDto(_mockMazes.TestMaze1);
+
+        Assert.NotNull(contentResult);
+        Assert.IsAssignableFrom<MazeResponseDto>(contentResult);
+
+        var resContent = (MazeResponseDto)contentResult;
+        resContent.Should().BeEquivalentTo(expectContent);
+      }
+    }
+
+    [Test]
+    public async Task ControllerShouldReturnNotFoundIfMazeIdNotExists()
+    {
+      var options = new DbContextOptionsBuilder<ApiContext>()
+        .UseInMemoryDatabase(databaseName: $"TestContext{_rnd.Next()}")
+        .Options;
+
+      using (var context = new ApiContext(options))
+      {
+        context.Mazes.Add(_mockMazes.TestMaze1);
+        context.Mazes.Add(_mockMazes.TestMaze2);
+        context.SaveChanges();
+      }
+
+      using (var context = new ApiContext(options))
+      {
+        var mockRepository = new MazeRepository(context);
+        MazeController controller = new(_logger, mockRepository);
+
+        var actionResult = await controller.GetMazeById(-1);
+
+        Assert.IsInstanceOf(typeof(NotFoundObjectResult), actionResult.Result);
+      }
     }
   }
 }
