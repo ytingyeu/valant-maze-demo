@@ -1,8 +1,11 @@
+using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Newtonsoft.Json;
 using NUnit.Framework;
+using ValantDemoApi.Models;
 
 namespace ValantDemoApi.Tests
 {
@@ -21,13 +24,18 @@ namespace ValantDemoApi.Tests
         [Test]
         public async Task ShouldReturnAllFourDirectionsForMovementThroughMaze()
         {
-          var result = await this.client.GetAsync("/Maze");
+          var result = await this.client.GetAsync("/Maze/NextAvailableMoves");
           result.EnsureSuccessStatusCode();
-          var content = JsonConvert.DeserializeObject<string[]>(await result.Content.ReadAsStringAsync());
-          content.Should().Contain("Up");
-          content.Should().Contain("Down");
-          content.Should().Contain("Left");
-          content.Should().Contain("Right");
+          var content = JsonConvert.DeserializeObject<Movement[]>(await result.Content.ReadAsStringAsync());
+
+          var expectContent = new Movement[] {
+            new Movement("Up", new Cell(-1, 0)),
+            new Movement("Down", new Cell(1, 0)),
+            new Movement("Left", new Cell(0, -1)),
+            new Movement("Right", new Cell(0, 1)),
+          };
+
+          content.Should().BeEquivalentTo(expectContent);
         }
     }
 }
