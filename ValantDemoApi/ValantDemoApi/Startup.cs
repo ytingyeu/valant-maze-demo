@@ -44,7 +44,10 @@ namespace ValantDemoApi
         app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ValantDemoApi v1"));
 
         var context = serviceProvider.GetService<ApiContext>();
-        AddTestData(context);
+        var mockMazes = new MockData.MockMazes();
+        context.Mazes.Add(mockMazes.TestMaze1);
+        context.Mazes.Add(mockMazes.TestMaze2);
+        context.SaveChanges();
       }
 
       app.UseRouting();
@@ -60,37 +63,5 @@ namespace ValantDemoApi
         endpoints.MapControllers();
       });
     }
-    private static void AddTestData(ApiContext context)
-    {
-
-      DateTime dt1 = new(2022, 8, 18, 13, 15, 22);
-      var testMaze1 = new Maze
-      {
-        Id = 12,
-        UploadDate = dt1.ToUniversalTime().ToString(),
-        GraphString = "SOXXXXXXXX#OOOXXXXXXX#OXOOOXOOOO#XXXXOXOXXO#OOOOOOOXXO#OXXOXXXXXO#OOOOXXXXXE#",
-        StartRow = 0,
-        StartCol = 0,
-        ExitRow = 6,
-        ExitCol = 9
-      };
-
-      context.Mazes.Add(testMaze1);
-
-      DateTime dt2 = new(2022, 8, 18, 16, 29, 52);
-      var testMaze2 = new Maze
-      {
-        Id = 13,
-        UploadDate = dt2.ToUniversalTime().ToString(),
-        GraphString = "SOXXXXXXXX#OOOXXXXXXX#OXOOOXOOOO#XXXXOXOXXO#OOOOOOOXXO#OXXXXXOXXX#XXEOOOOXXX#",
-        StartRow = 0,
-        StartCol = 0,
-        ExitRow = 6,
-        ExitCol = 2
-      };
-
-      context.Mazes.Add(testMaze2);
-      context.SaveChanges();
-    }    
   }
 }
