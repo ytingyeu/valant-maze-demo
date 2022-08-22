@@ -15,7 +15,7 @@ namespace ValantDemoApi.ValantMaze
     private readonly ILogger<MazeController> _logger;
     private readonly IMazeRepository _mazeRepository;
 
-    public MazeController(ILogger<MazeController> logger, ApiContext context, IMazeRepository mazeRepository)
+    public MazeController(ILogger<MazeController> logger, IMazeRepository mazeRepository)
     {
       _logger = logger;
       _mazeRepository = mazeRepository;
@@ -48,10 +48,10 @@ namespace ValantDemoApi.ValantMaze
     {
       var listOfMazeDTO = new List<MazeResponseDto>();
 
-      var mazes = _mazeRepository.GetMazes();
-
       try
       {
+        var mazes = _mazeRepository.GetMazes();
+
         foreach (var maze in mazes)
         {
           listOfMazeDTO.Add(new MazeResponseDto(maze));
