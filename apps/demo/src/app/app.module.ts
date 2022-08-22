@@ -16,6 +16,7 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { HomeComponent } from './home/home.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NowLoadingComponent } from './now-loading/now-loading.component';
+import { UploadMazeComponent } from './available-mazes/upload-maze/upload-maze.component';
 
 export function getBaseUrl(): string {
   return environment.baseUrl;
@@ -32,6 +33,7 @@ export function getBaseUrl(): string {
     NavbarComponent,
     HomeComponent,
     NowLoadingComponent,
+    UploadMazeComponent,
   ],
   imports: [BrowserModule, HttpClientModule, AppRoutingModule, FormsModule, ReactiveFormsModule],
   providers: [
