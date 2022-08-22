@@ -16,7 +16,7 @@ export class UploadMazeComponent implements OnInit {
   isSubmitted: boolean = false;
 
   @Output() updateIsLoaded = new EventEmitter<boolean>();
-  @Output() updateListOfMazes = new EventEmitter<IMaze[]>();
+  @Output() insertCreatedMaze = new EventEmitter<IMaze>();
 
   constructor(private logger: LoggingService, private mazeService: MazeService, private formBuilder: FormBuilder) {}
 
@@ -92,8 +92,8 @@ export class UploadMazeComponent implements OnInit {
 
   private postNewMazes(json: INewMaze): void {
     this.mazeService.postNewMaze(json).subscribe({
-      next: (mazes: IMaze[]) => {
-        this.mazeListEmitter(mazes);
+      next: (createdMaze: IMaze) => {
+        this.insertCreatedMazeEmitter(createdMaze);
         this.isSubmitted = false;
         this.uploadForm.reset();
       },
@@ -114,8 +114,8 @@ export class UploadMazeComponent implements OnInit {
     return cleanstring;
   }
 
-  mazeListEmitter(newMazes: IMaze[]) {
-    this.updateListOfMazes.emit(newMazes);
+  insertCreatedMazeEmitter(createdMaze: IMaze) {
+    this.insertCreatedMaze.emit(createdMaze);
   }
 
   isLoadedEmitter(newIsLoaded: boolean) {

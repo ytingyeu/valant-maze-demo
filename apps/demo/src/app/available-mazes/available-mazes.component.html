@@ -1,6 +1,6 @@
 <h2>Available Mazes</h2>
 <div>
-  <valant-upload-maze (updateIsLoaded)="updateIsLoaded($event)" (updateListOfMazes)="updateListOfMazes($event)"></valant-upload-maze>
+  <valant-upload-maze (updateIsLoaded)="updateIsLoaded($event)" (updateListOfMazes)="insertCreatedMaze($event)"></valant-upload-maze>
   <ul class="available-mazes" *ngIf="isLoaded">
     <li *ngFor="let maze of listOfMazes" class="maze-entity">
       <valant-display-maze [graph]="maze.graph"></valant-display-maze>
