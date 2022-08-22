@@ -13,13 +13,11 @@ namespace ValantDemoApi.ValantMaze
   public class MazeController : ControllerBase
   {
     private readonly ILogger<MazeController> _logger;
-    private readonly ApiContext _context;
-    private IMazeRepository _mazeRepository;
+    private readonly IMazeRepository _mazeRepository;
 
     public MazeController(ILogger<MazeController> logger, ApiContext context, IMazeRepository mazeRepository)
     {
       _logger = logger;
-      _context = context;
       _mazeRepository = mazeRepository;
     }
 
@@ -28,7 +26,6 @@ namespace ValantDemoApi.ValantMaze
     {
       try
       {
-        //var maze = await _context.Mazes.FindAsync(id);
         var maze = await _mazeRepository.GetMazeById(id);
 
         if (maze == null)
@@ -88,9 +85,6 @@ namespace ValantDemoApi.ValantMaze
         _mazeRepository.AddMaze(newMaze);
         await _mazeRepository.SaveAsync();
 
-        //_context.Mazes.Add(newMaze);
-        //await _context.SaveChangesAsync();
-
         return CreatedAtAction(nameof(GetMazeById), new { id = newMaze.Id }, new MazeResponseDto(newMaze));
       }
       catch (DbUpdateException ex)
@@ -108,11 +102,11 @@ namespace ValantDemoApi.ValantMaze
 
       foreach (string direction in Enum.GetNames(typeof(MoveEnum)))
       {
-          moveList.Add(new Movement(direction, DirectionDict[direction]));
+        moveList.Add(new Movement(direction, DirectionDict[direction]));
       }
 
       return moveList;
-    }    
+    }
 
     private enum MoveEnum
     {
@@ -121,10 +115,10 @@ namespace ValantDemoApi.ValantMaze
 
     private static Dictionary<string, Cell> DirectionDict => new()
     {
-        { MoveEnum.Up.ToString(), new Cell (-1, 0) },
-        { MoveEnum.Down.ToString(), new Cell (1, 0) },
-        { MoveEnum.Left.ToString(), new Cell (0, -1) },
-        { MoveEnum.Right.ToString(), new Cell (0, 1) },
+      { MoveEnum.Up.ToString(), new Cell(-1, 0) },
+      { MoveEnum.Down.ToString(), new Cell(1, 0) },
+      { MoveEnum.Left.ToString(), new Cell(0, -1) },
+      { MoveEnum.Right.ToString(), new Cell(0, 1) },
     };
   }
 }

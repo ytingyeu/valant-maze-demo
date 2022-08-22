@@ -7,7 +7,7 @@ namespace ValantDemoApi.ValantMaze
 {
   public class MazeRepository : IMazeRepository, IDisposable
   {
-    private ApiContext _context;
+    private readonly ApiContext _context;
 
     public MazeRepository(ApiContext context)
     {
