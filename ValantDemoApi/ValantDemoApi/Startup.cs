@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 using System;
 using System.Collections.Generic;
-using ValantDemoApi.Models;
+using ValantDemoApi.ValantMaze;
 using System.Linq;
 
 namespace ValantDemoApi
@@ -25,6 +25,7 @@ namespace ValantDemoApi
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
+      services.AddScoped<IMazeRepository, MazeRepository>();
       services.AddDbContext<ApiContext>(opt => opt.UseInMemoryDatabase(databaseName: "ValantMaze"));
       services.AddCors();
       services.AddControllers();

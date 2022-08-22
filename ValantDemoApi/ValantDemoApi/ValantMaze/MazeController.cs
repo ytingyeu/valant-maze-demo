@@ -4,10 +4,9 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using ValantDemoApi.Models;
 using ValantDemoApi.Shared;
 
-namespace ValantDemoApi.Controllers
+namespace ValantDemoApi.ValantMaze
 {
   [ApiController]
   [Route("[controller]")]
@@ -15,11 +14,13 @@ namespace ValantDemoApi.Controllers
   {
     private readonly ILogger<MazeController> _logger;
     private readonly ApiContext _context;
+    private IMazeRepository _mazeRepository;
 
-    public MazeController(ILogger<MazeController> logger, ApiContext context)
+    public MazeController(ILogger<MazeController> logger, ApiContext context, IMazeRepository mazeRepository)
     {
       _logger = logger;
       _context = context;
+      _mazeRepository = mazeRepository;
     }
 
     [HttpGet("{id}")]
@@ -27,7 +28,8 @@ namespace ValantDemoApi.Controllers
     {
       try
       {
-        var maze = await _context.Mazes.FindAsync(id);
+        //var maze = await _context.Mazes.FindAsync(id);
+        var maze = await _mazeRepository.GetMazeById(id);
 
         if (maze == null)
         {
@@ -49,9 +51,11 @@ namespace ValantDemoApi.Controllers
     {
       var listOfMazeDTO = new List<MazeResponseDto>();
 
+      var mazes = _mazeRepository.GetMazes();
+
       try
       {
-        foreach (var maze in _context.Mazes)
+        foreach (var maze in mazes)
         {
           listOfMazeDTO.Add(new MazeResponseDto(maze));
         }
@@ -81,8 +85,11 @@ namespace ValantDemoApi.Controllers
           ExitCol = mazeDto.Exit.Col,
         };
 
-        _context.Mazes.Add(newMaze);
-        await _context.SaveChangesAsync();
+        _mazeRepository.AddMaze(newMaze);
+        await _mazeRepository.SaveAsync();
+
+        //_context.Mazes.Add(newMaze);
+        //await _context.SaveChangesAsync();
 
         return CreatedAtAction(nameof(GetMazeById), new { id = newMaze.Id }, new MazeResponseDto(newMaze));
       }
@@ -91,25 +98,6 @@ namespace ValantDemoApi.Controllers
         _logger.LogError("Error adding new maze.", ex);
         return StatusCode(500);
       }
-
-
-
-      //var listOfMazeDTO = new List<MazeResponseDto>();
-
-      //try
-      //{
-      //  foreach (var maze in _context.Mazes)
-      //  {
-      //    listOfMazeDTO.Add(new MazeResponseDto(maze));
-      //  }
-      //}
-      //catch (Exception ex)
-      //{
-      //  _logger.LogError("Error retrieving mazes.", ex);
-      //  return StatusCode(500);
-      //}
-
-      //return Ok(listOfMazeDTO);
     }
 
     [HttpGet]
@@ -124,18 +112,7 @@ namespace ValantDemoApi.Controllers
       }
 
       return moveList;
-    }
-
-    public class Movement
-    {
-      public Movement(string name, Cell direction)
-      {
-        Name = name;
-        Direction = direction;
-      }
-      public string Name { get; set; }
-      public Cell Direction { get; set; }
-    }
+    }    
 
     private enum MoveEnum
     {

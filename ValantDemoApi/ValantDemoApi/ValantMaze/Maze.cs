@@ -3,9 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ValantDemoApi.Models;
 
-namespace ValantDemoApi.Models
+namespace ValantDemoApi.ValantMaze
 {
   public class Maze
   {
@@ -54,6 +53,17 @@ namespace ValantDemoApi.Models
 
     public int Row { get; set; }
     public int Col { get; set; }
+  }
+
+  public class Movement
+  {
+    public Movement(string name, Cell direction)
+    {
+      Name = name;
+      Direction = direction;
+    }
+    public string Name { get; set; }
+    public Cell Direction { get; set; }
   }
 }
 
