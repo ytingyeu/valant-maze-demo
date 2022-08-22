@@ -22,8 +22,8 @@ export class AvailableMazesComponent implements OnInit {
     this.isLoaded = newState;
   }
 
-  updateListOfMazes(newMazes: IMaze[]) {
-    this.listOfMazes = [...newMazes];
+  insertCreatedMaze(createdMaze: IMaze) {
+    this.listOfMazes = [...this.listOfMazes, createdMaze];
     this.isLoaded = true;
   }
 

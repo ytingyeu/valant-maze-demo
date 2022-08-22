@@ -24,7 +24,7 @@ export class MazeService {
     return this._apiClient.getMazeById(id);
   }
 
-  postNewMaze(json: INewMaze): Observable<IMaze[]> {
+  postNewMaze(json: INewMaze): Observable<IMaze> {
     return this._apiClient.postNewMaze(json);
   }
 
