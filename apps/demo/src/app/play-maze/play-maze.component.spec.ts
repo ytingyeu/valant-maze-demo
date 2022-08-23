@@ -1,16 +1,9 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { IMovement } from '../_models/maze/maze';
-import { RouterTestingModule } from '@angular/router/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-
 import { PlayMazeComponent } from './play-maze.component';
-import { ValantDemoApiClient } from '../api-client/api-client';
 import { Shallow } from 'shallow-render';
 import { AppModule } from '../app.module';
 import { MazeService } from '../_services/maze.service';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, of as _observableOf } from 'rxjs';
+import { of as _observableOf } from 'rxjs';
 import { MOCK_MAZES, VALID_MOVEMENTS } from '../_models/maze/mock-mazes';
 
 const mockMaze = MOCK_MAZES[0];

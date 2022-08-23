@@ -1,4 +1,3 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Shallow } from 'shallow-render';
 import { AppModule } from '../app.module';
 

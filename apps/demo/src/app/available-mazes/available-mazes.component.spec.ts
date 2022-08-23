@@ -1,8 +1,4 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { Component } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Shallow } from 'shallow-render';
-import { ValantDemoApiClient } from '../api-client/api-client';
 import { AppModule } from '../app.module';
 import { of } from 'rxjs';
 
