@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { MazeService } from './maze.service';
 import { ValantDemoApiClient } from '../api-client/api-client';
-import { MOCK_MAZES } from '../_models/maze/mock-mazes';
+import { MOCK_MAZES, NEW_MAZE_REQ } from '../_models/maze/mock-mazes';
 import { IMaze, INewMaze, IMovement } from '../_models/maze/maze';
 
 class MockClient {
@@ -59,15 +59,10 @@ describe('MazeService', () => {
     expect(spyClient).toBeCalledWith(MOCK_MAZES[1].id);
   });
 
-  it('postNewMaze should call api client with pass POST request passed.', () => {
-    const json: INewMaze = {
-      graphString: 'SOXXXXXXXX#OOOXXXXXXX#OXOOOXOOOO#XXXXOXOXXO#OOOOOOOXXO#OXXOXXXXXO#OOOOXXXXXE#',
-      start: { row: 0, col: 0 },
-      exit: { row: 6, col: 9 },
-    };
+  it('postNewMaze should call api client with pass POST request passed.', () => {    
     const spyClient = jest.spyOn(client, 'postNewMaze');
-    service.postNewMaze(json);
-    expect(spyClient).toBeCalledWith(json);
+    service.postNewMaze(NEW_MAZE_REQ);
+    expect(spyClient).toBeCalledWith(NEW_MAZE_REQ);
   });
 
   it('getNextMovements should call api client to get available moves.', () => {
