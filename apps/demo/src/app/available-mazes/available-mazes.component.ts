@@ -35,7 +35,6 @@ export class AvailableMazesComponent implements OnInit {
       },
       error: (error) => {
         this.logger.error('Error getting mazes: ', error);
-        console.error(error);
       },
     });
   }
