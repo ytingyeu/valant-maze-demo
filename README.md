@@ -41,7 +41,8 @@ I also replace the provided `stuff` service to my own service `_services/maze.se
 
 ### Backend side
 #### Implementation
-Use `Microsoft.EntityFrameworkCore.InMemory` as mock database.
+Use `Microsoft.EntityFrameworkCore.InMemory` as mock database. 
+Test data are only be added when running in developemnt mode.
 
 Important directories/files:
 - `ValantDemoApi.MockData`: include mock data that added into database.
@@ -62,10 +63,10 @@ Include four API endpoints:
 Use plain text and break with each row with any one of `["\r", "\n", "\n\r" ]`. The last line doesn't need to be an empty line.
 
 Assumptions: 
-- Case-insensitive
-- The shape of maze must be rectangle.
-- Must contain start and end point.
+- The shape of maze MUST be rectangle.
+- MUST contain one and only one start symbol `S` and exit sympol `E`.
 - Any invaid symobl will be replaced to wall, i.e. `X`.
+- Case-insensitive
 
 Example:
 ```
