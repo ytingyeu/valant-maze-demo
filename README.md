@@ -30,7 +30,7 @@ I also replace the provided `stuff` service to my own service `_services/maze.se
 2. Click the `Play` link under a maze preview.
 3. Click the move buttons to play.
 4. A congratulation message will be displayed once the client succeeds. 
-5. After succeed, either click the navigation links to go home page/available-mazes page, or reset the game by click `Reset Game` button.
+5. After success, one can either click navigation links to go home page/available mazes page, or resets the game by click `Reset Game` button.
 
 #### Upload a maze
 1. From any page, click `Available Mazes` on the navbar.
