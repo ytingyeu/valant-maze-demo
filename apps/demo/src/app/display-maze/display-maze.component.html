@@ -1,6 +1,6 @@
 <table class="display-maze">
-  <tr *ngFor="let row of graph">
-    <td *ngFor="let symbol of row">
+  <tr *ngFor="let row of graph" class="maze-row">
+    <td *ngFor="let symbol of row" class="maze-cell">
       {{symbol | charToMaze}}
     </td>
   </tr>

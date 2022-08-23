@@ -5,7 +5,7 @@ import { MOCK_MAZES } from '../_models/maze/mock-mazes';
 
 import { DisplayMazeComponent } from './display-maze.component';
 
-describe('DisplayMazeComponent', () => {
+describe('Test DisplayMazeComponent', () => {
   let component: Shallow<DisplayMazeComponent>;
 
   beforeEach(() => {

@@ -37,6 +37,6 @@ describe('AvailableMazesComponent', () => {
 
   it('shoud render mazes after fetch data on init', async () => {
     const { find } = await component.render();
-    expect(find('.maze-entity')).toHaveFoundMoreThan(1);
+    expect(find('.maze-entity')).toHaveFoundMoreThan(0);
   });
 });
