@@ -44,7 +44,9 @@ describe('ApiClient', () => {
 
     const req = httpMock.expectOne(`${baseUrl}/Maze/all`);
     expect(req.request.method).toBe('GET');
-    req.flush(MOCK_MAZES);
+
+    const expectBlob = new Blob([JSON.stringify(MOCK_MAZES)], { type: 'application/json' });
+    req.flush(expectBlob);
   });
 
   it('getMazeById should make GET requesut to fetch a maze by Id.', () => {
@@ -54,7 +56,9 @@ describe('ApiClient', () => {
 
     const req = httpMock.expectOne(`${baseUrl}/Maze/${mockMaze.id}`);
     expect(req.request.method).toBe('GET');
-    req.flush(mockMaze);
+
+    const expectBlob = new Blob([JSON.stringify(mockMaze)], { type: 'application/json' });
+    req.flush(expectBlob);
   });
 
   it('postNewMaze should make POST requesut to create a maze.', () => {
@@ -65,7 +69,9 @@ describe('ApiClient', () => {
     const req = httpMock.expectOne(`${baseUrl}/Maze`);
     expect(req.request.method).toBe('POST');
     expect(req.request.body).toBe(NEW_MAZE_REQ);
-    req.flush(mockMaze);
+
+    const expectBlob = new Blob([JSON.stringify(NEW_MAZE_REQ)], { type: 'application/json' });
+    req.flush(expectBlob);
   });
 
   it('getNextMovements should make GET requesut to fetch available moves.', () => {
