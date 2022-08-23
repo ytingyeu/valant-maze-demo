@@ -28,6 +28,14 @@ namespace ValantDemoApi.Utils
 
     public static string[][] ConverGraphStringToGraph(string graphString)
     {
+      const string replaceInvaidSymbol = "X";
+
+      HashSet<char> validSymols = new()
+      {
+        'S', 'E', 'X', 'O'
+      };
+
+      graphString = graphString.ToUpper();
       string[] rows = graphString.Split('#');
 
       // the last line also includes a '#' as end-of-row,
@@ -43,7 +51,15 @@ namespace ValantDemoApi.Utils
 
         foreach (var symbol in rows[i])
         {
-          temp.Add(symbol.ToString());
+          if(validSymols.Contains(symbol))
+          {
+            temp.Add(symbol.ToString());
+          }
+          else
+          {
+            temp.Add(replaceInvaidSymbol);
+          }
+          
         }
         graph[i] = temp.ToArray();
       }
