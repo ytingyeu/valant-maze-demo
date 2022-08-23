@@ -4,7 +4,7 @@ export class Utils {
   public static convertGraphStringToList(graphString: string) {
     const graph: string[][] = [];
 
-    graphString.split('#').forEach((row) => {
+    graphString.toUpperCase().split('#').forEach((row) => {
       graph.push(row.split(''));
     });
 

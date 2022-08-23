@@ -6,6 +6,96 @@ This project was generated using [Nx](https://nx.dev).
 
 [Interactive Tutorial](https://nx.dev/angular-tutorial/01-create-application)
 
+
+# Note to code reviewer
+
+## Project implementation
+
+### Installation
+No additional installation/compilation required. 
+`ValantDemoApi.*.csproj` and `package.json` should include all required packages.
+Please use the commands that project template provides to intall and run applications.
+
+### Frontend side
+#### Implementation
+Include three paths:
+- `/` :  home path, which only displays a short welcome message.
+- `/available-mazes`: display available mazes can play. Also contain a simple form to upload maze.
+- `/play-maze/{id}`: where the client play a maze. Include maze display and a gamepad.
+
+I also replace the provided `stuff` service to my own service `_services/maze.service.`
+
+#### Play a game
+1. From any page, click `Available Mazes` on the navbar.
+2. Click the `Play` link under a maze preview.
+3. Click the move buttons to play.
+4. A congratulation message will be displayed once the client succeeds. 
+5. After succeed, either click the navigation links to go home page/available-mazes page, or reset the game by click `Reset Game` button.
+
+#### Upload a maze
+1. From any page, click `Available Mazes` on the navbar.
+2. Click `Choose File` and choose a valid plain text file.
+3. Click `Upload`
+4. Wait until new maze displayed.
+
+
+### Backend side
+#### Implementation
+Use `Microsoft.EntityFrameworkCore.InMemory` as mock database.
+
+Important directories/files:
+- `ValantDemoApi.MockData`: include mock data that added into database.
+- `ValantDemoApi.Utils`: include common features such as mock id generator that this demo uses
+- `ValantDemoApi.ValantMaze`: include the model, repository, and controller of Maze entity.
+- `./ApiContext`: the database context that used by this demo.
+- `./Setup`: mock data is added here in `Configure()`.
+
+#### API endpoints
+Include four API endpoints:
+- `GET /Maze/{id}`: get maze by maze id
+- `GET /Maze/all`: get all mazes
+- `POST /Maze`: add a new maze
+- `GET /Maze/NextAvailableMoves`: get all available moves
+  
+
+## Maze definition format 
+Use plain text and break with each row with any one of `["\r", "\n", "\n\r" ]`. The last line doesn't need to be an empty line.
+
+Assumptions: 
+- Case-insensitive
+- The shape of maze must be rectangle.
+- Must contain start and end point.
+- Any invaid symobl will be replaced to wall, i.e. `X`.
+
+Example:
+```
+XOXXXXXXXX
+OOOXOOOOEX
+OXOOOXXOOO
+XXOXOXOXXO
+OOOOOOOXXO
+OXXOXXSXXO
+OOOOXXXXXX
+```
+An example file `NewMazeString.example.txt` with the same content is in the project root.
+
+## About test
+Backend unit test cases cover four HTTP request tests and four controller tests.
+When testing HTTP request, the test case for `GET /Maze/all` is configured to be run first. 
+The reason is I am not able to isolate test DB context and `POST` request impacts the result.
+While testing controllers does not have this issue. All test cases use different mocked DB contexts.
+
+For frontend unit test, 
+Service functions to make API calls are all covered.
+Each component is tested at least being created/rendered, @Intput/@Output functions, and basic view.
+Except the component `upload-maze`, 
+I was struggling with mocking form control behavior, but fails to trigger file input event and form submit event.
+If you run all tests, you might notice one is skipped. That it is.
+
+e2e testing is not implemented.
+
+# Contents below are provided by project template.
+
 ## Get started
 
 Run `npm install` to install the UI project dependencies. Grab a cup of coffee or your beverage of choice.
