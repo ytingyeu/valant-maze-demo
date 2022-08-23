@@ -44,6 +44,20 @@ I also replace the provided `stuff` service to my own service `_services/maze.se
 Use `Microsoft.EntityFrameworkCore.InMemory` as mock database. 
 Test data are only be added when running in developemnt mode.
 
+Maze table schema 
+```sql
+Maze{
+  Id: INTEGER;
+  UploadDate: DATETIME
+  GraphString: VARCHAR(MAX);
+  StartRow: INTEGER
+  StartCol: INTEGER
+  ExitRow: INTEGER
+  ExitCol: INTEGER
+}
+```
+
+
 Important directories/files:
 - `ValantDemoApi.MockData`: include mock data that added into database.
 - `ValantDemoApi.Utils`: include common features such as mock id generator that this demo uses
@@ -64,8 +78,8 @@ Use plain text and break with each row with any one of `["\r", "\n", "\n\r" ]`. 
 
 Assumptions: 
 - The shape of maze MUST be rectangle.
-- MUST contain one and only one start symbol `S` and exit sympol `E`.
-- Any invaid symobl will be replaced to wall, i.e. `X`.
+- MUST contain one and only one start symbol `"S"` and exit symbol `"E"`.
+- Any invalid symobl will be replaced to wall, i.e. `"X"`.
 - Case-insensitive
 
 Example:
@@ -79,6 +93,18 @@ OXXOXXSXXO
 OOOOXXXXXX
 ```
 An example file `NewMazeString.example.txt` with the same content is in the project root.
+
+After click upload, Angular app read the file above and convert to a single string which use `"#"` to idicate new lines.
+
+Example:
+```
+XOXXXXXXXX#OOOXOOOOEXOXOOOXXOOO#XXOXOXOXXO#OOOOOOOXXO#OXXOXXSXXO#OOOOXXXXXX#
+```
+
+In my design, the backedn app stores this string (called `GraphString`) in database. 
+And if there is any GET maze request,
+backend will convert `GraphString` to `string[][]` and return to the client as JSON.
+
 
 ## About test
 Backend unit test cases cover four HTTP request tests and four controller tests.
