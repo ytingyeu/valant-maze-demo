@@ -75,7 +75,7 @@ namespace ValantDemoApi.ValantMaze
         var newMaze = new Maze
         {
           Id = MazeDemoCommons.GenerateMockMazeId(),
-          UploadDate = DateTime.UtcNow.ToString(),
+          UploadDate = DateTime.UtcNow,
           GraphString = mazeDto.GraphString,
           StartRow = mazeDto.Start.Row,
           StartCol = mazeDto.Start.Col,

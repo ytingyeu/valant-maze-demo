@@ -1,6 +1,6 @@
 export interface IMaze {
   id: number;
-  uploadDate: string;
+  uploadDate: Date;
   graph: string[][];
   start: { row: number; col: number };
   exit: { row: number; col: number };

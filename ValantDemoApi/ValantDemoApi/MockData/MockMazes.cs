@@ -14,7 +14,7 @@ namespace ValantDemoApi.MockData
       TestMaze1 = new Maze
       {
         Id = 12,
-        UploadDate = dt1.ToUniversalTime().ToString(),
+        UploadDate = dt1.ToUniversalTime(),
         GraphString = "SOXXXXXXXX#OOOXXXXXXX#OXOOOXOOOO#XXXXOXOXXO#OOOOOOOXXO#OXXOXXXXXO#OOOOXXXXXE#",
         StartRow = 0,
         StartCol = 0,
@@ -26,7 +26,7 @@ namespace ValantDemoApi.MockData
       TestMaze2 = new Maze
       {
         Id = 13,
-        UploadDate = dt2.ToUniversalTime().ToString(),
+        UploadDate = dt2.ToUniversalTime(),
         GraphString = "SOXXXXXXXX#OOOXXXXXXX#OXOOOXOOOO#XXXXOXOXXO#OOOOOOOXXO#OXXXXXOXXX#XXEOOOOXXX#",
         StartRow = 0,
         StartCol = 0,

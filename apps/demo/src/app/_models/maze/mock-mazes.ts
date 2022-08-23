@@ -23,7 +23,7 @@ const graph2 = [
 export const MOCK_MAZES: IMaze[] = [
   {
     id: 12,
-    uploadDate: new Date(2022, 7, 18, 15, 20, 12).toLocaleString(),
+    uploadDate: new Date(2022, 7, 18, 15, 20, 12),
     // graphString: JSON.stringify(graph1),
     // graphString: 'SOXXXXXXXX#OOOXXXXXXX#OXOOOXOOOO#XXXXOXOXXO#OOOOOOOXXO#OXXOXXXXXO#OOOOXXXXXE#',
     graph: graph1,
@@ -32,7 +32,7 @@ export const MOCK_MAZES: IMaze[] = [
   },
   {
     id: 13,
-    uploadDate: new Date(2022, 7, 18, 17, 23, 42).toLocaleString(),
+    uploadDate: new Date(2022, 7, 18, 17, 23, 42),
     // graphString: JSON.stringify(graph2),
     // graphString: 'SOXXXXXXXX#OOOXXXXXXX#OXOOOXOOOO#XXXXOXOXXO#OOOOOOOXXO#OXXXXXOXXX#XXEOOOOXXX#',
     graph: graph2,
