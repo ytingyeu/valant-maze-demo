@@ -2,17 +2,28 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ValantDemoApi.ValantMaze;
 
-namespace ValantDemoApi.Shared
+namespace ValantDemoApi.Utils
 {
-  public class ShareFunctions
+  public class MazeDemoCommons
   {
 
-    private static int mockIdCounter = 14;
+    private static int mockMazeIdCounter = 14;
+
+    public static int GetCurrentMockMazeId()
+    {
+      return mockMazeIdCounter;
+    }
+
+    public static int GetLastCreatedMockMazeId()
+    {
+      return mockMazeIdCounter - 1;
+    }
 
     public static int GenerateMockMazeId()
-    {      
-      return mockIdCounter++;
+    {
+      return mockMazeIdCounter++;
     }
 
     public static string[][] ConverGraphStringToGraph(string graphString)
@@ -31,13 +42,29 @@ namespace ValantDemoApi.Shared
         var temp = new List<string>();
 
         foreach (var symbol in rows[i])
-        {          
+        {
           temp.Add(symbol.ToString());
         }
         graph[i] = temp.ToArray();
       }
 
       return graph;
+    }
+
+    public enum MoveEnum
+    {
+      Up, Down, Left, Right
+    }
+
+    public static Dictionary<string, Cell> GetDirectionDict()
+    {
+      return new Dictionary<string, Cell>
+      {
+        { MoveEnum.Up.ToString(), new Cell(-1, 0) },
+        { MoveEnum.Down.ToString(), new Cell(1, 0) },
+        { MoveEnum.Left.ToString(), new Cell(0, -1) },
+        { MoveEnum.Right.ToString(), new Cell(0, 1) },
+      };
     }
   }
 }

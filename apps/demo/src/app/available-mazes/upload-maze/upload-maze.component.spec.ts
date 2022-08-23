@@ -1,25 +1,35 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { UploadMazeComponent } from './upload-maze.component';
+import { Shallow } from 'shallow-render';
+import { AppModule } from '../../app.module';
+import { MazeService } from '../../_services/maze.service';
+import { FormBuilder } from '@angular/forms';
+import { of } from 'rxjs';
 
-describe('UploadMazeComponent', () => {
-  let component: UploadMazeComponent;
-  let fixture: ComponentFixture<UploadMazeComponent>;
+const mockMazeService = {
+  postNewMaze: jest.fn(() => of([])),
+};
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ UploadMazeComponent ]
-    })
-    .compileComponents();
-  });
+fdescribe('UploadMazeComponent', () => {
+  let component: Shallow<UploadMazeComponent>;
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(UploadMazeComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    component = new Shallow(UploadMazeComponent, AppModule).provideMock([
+      { provide: MazeService, useValue: mockMazeService },
+      { provide: FormBuilder, useClass: FormBuilder },
+    ]);
+    jest.clearAllMocks();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it('should render UploadMaze', async () => {
+    const rendering = await component.render();
+    expect(rendering).toBeTruthy();
+  });
+
+  it.skip('select file should send file info to property.', async () => {
+    const { find, outputs, instance } = await component.render();
+
+    find('form.inputFile').triggerEventHandler('ngSubmit', {});
+    const onFileSelectSpy = jest.spyOn(instance, 'onFileSelect');
+    expect(onFileSelectSpy).toHaveBeenCalled();
   });
 });

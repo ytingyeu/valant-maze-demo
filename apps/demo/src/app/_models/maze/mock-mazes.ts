@@ -1,4 +1,4 @@
-import { IMaze } from './maze';
+import { IMaze, IMovement, INewMaze } from './maze';
 
 const graph1 = [
   ['S', 'O', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'],
@@ -39,4 +39,17 @@ export const MOCK_MAZES: IMaze[] = [
     start: { row: 0, col: 0 },
     exit: { row: 6, col: 2 },
   },
+];
+
+export const NEW_MAZE_REQ: INewMaze = {
+  graphString: 'SOXXXXXXXX#OOOXXXXXXX#OXOOOXOOOO#XXXXOXOXXO#OOOOOOOXXO#OXXOXXXXXO#OOOOXXXXXE#',
+  start: { row: 0, col: 0 },
+  exit: { row: 6, col: 9 },
+};
+
+export const VALID_MOVEMENTS: IMovement[] = [
+  { name: 'Up', direction: { row: -1, col: 0 } },
+  { name: 'Down', direction: { row: 1, col: 0 } },
+  { name: 'Left', direction: { row: 0, col: -1 } },
+  { name: 'Right', direction: { row: 0, col: 1 } },
 ];

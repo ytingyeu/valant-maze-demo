@@ -1,25 +1,25 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Shallow } from 'shallow-render';
+import { AppModule } from '../app.module';
+import { MOCK_MAZES } from '../_models/maze/mock-mazes';
 
 import { DisplayMazeComponent } from './display-maze.component';
 
-describe('DisplayMazeComponent', () => {
-  let component: DisplayMazeComponent;
-  let fixture: ComponentFixture<DisplayMazeComponent>;
+const mockMaze = MOCK_MAZES[0];
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ DisplayMazeComponent ]
-    })
-    .compileComponents();
-  });
+describe('Test DisplayMazeComponent', () => {
+  let component: Shallow<DisplayMazeComponent>;
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DisplayMazeComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    component = new Shallow(DisplayMazeComponent, AppModule);
+    jest.clearAllMocks();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it('should render DisplayMaze', async () => {
+    const rendering = await component.render({
+      bind: {
+        graph: mockMaze.graph,
+      },
+    });
+    expect(rendering).toBeTruthy();
   });
 });

@@ -4,8 +4,8 @@
   <ul class="available-mazes" *ngIf="isLoaded">
     <li *ngFor="let maze of listOfMazes" class="maze-entity">
       <valant-display-maze [graph]="maze.graph"></valant-display-maze>
-      <div>Upload date: {{maze.uploadDate}}</div>
-      <a routerLink="/play-maze/{{maze.id}}">Play</a>
+      <div class="upload-date">Upload date: {{maze.uploadDate}}</div>
+      <a routerLink="/play-maze/{{maze.id}}" class="link-to-play-maze">Play</a>
     </li>
   </ul>
 </div>

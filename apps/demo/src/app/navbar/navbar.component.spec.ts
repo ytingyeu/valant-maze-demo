@@ -1,25 +1,23 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Shallow } from 'shallow-render';
+import { AppModule } from '../app.module';
 
 import { NavbarComponent } from './navbar.component';
 
-describe('NavbarComponent', () => {
-  let component: NavbarComponent;
-  let fixture: ComponentFixture<NavbarComponent>;
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ NavbarComponent ]
-    })
-    .compileComponents();
-  });
+describe('Test NavbarComponent', () => {
+  let component: Shallow<NavbarComponent>;
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(NavbarComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    component = new Shallow(NavbarComponent, AppModule);
+    jest.clearAllMocks();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it('should render Navbar', async () => {
+    const rendering = await component.render();
+    expect(rendering).toBeTruthy();
+  });
+
+  it('Navbar should contain nav links.', async () => {
+    const { find } = await component.render();
+    expect(find('.nav-link')).toHaveFoundMoreThan(0);
   });
 });
