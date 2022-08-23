@@ -25,10 +25,12 @@ fdescribe('UploadMazeComponent', () => {
     expect(rendering).toBeTruthy();
   });
 
+  // Skip this test case
+  // strugging with triggering file input and submit event
   it.skip('select file should send file info to property.', async () => {
     const { find, outputs, instance } = await component.render();
 
-    find('form.inputFile').triggerEventHandler('ngSubmit', {});
+    find('form.inputFile').triggerEventHandler('input', {});
     const onFileSelectSpy = jest.spyOn(instance, 'onFileSelect');
     expect(onFileSelectSpy).toHaveBeenCalled();
   });
