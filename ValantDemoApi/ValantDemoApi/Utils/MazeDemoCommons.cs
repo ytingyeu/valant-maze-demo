@@ -28,7 +28,7 @@ namespace ValantDemoApi.Utils
 
     public static string[][] ConverGraphStringToGraph(string graphString)
     {
-      const string replaceInvaidSymbol = "X";
+      const string replaceInvalidSymbol = "X";
 
       HashSet<char> validSymols = new()
       {
@@ -57,7 +57,7 @@ namespace ValantDemoApi.Utils
           }
           else
           {
-            temp.Add(replaceInvaidSymbol);
+            temp.Add(replaceInvalidSymbol);
           }
           
         }
