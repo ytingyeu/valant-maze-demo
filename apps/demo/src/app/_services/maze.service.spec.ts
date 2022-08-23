@@ -1,20 +1,78 @@
 import { TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule } from "@angular/common/http/testing";
 import { MazeService } from './maze.service';
 import { ValantDemoApiClient } from '../api-client/api-client';
+import { MOCK_MAZES } from '../_models/maze/mock-mazes';
+import { IMaze, INewMaze, IMovement } from '../_models/maze/maze';
+
+class MockClient {
+  getListOfMazes(): IMaze[] {
+    return [];
+  }
+
+  getMazeById(id: number) {
+    return MOCK_MAZES.find((x) => x.id === id);
+  }
+
+  postNewMaze(_: INewMaze) {
+    return MOCK_MAZES[0];
+  }
+
+  getNextMovements(): IMovement[] {
+    return [];
+  }
+}
 
 describe('MazeService', () => {
   let service: MazeService;
+  let client: ValantDemoApiClient.Client;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule ],
-      providers: [ValantDemoApiClient.Client],
+      imports: [],
+      providers: [
+        {
+          provide: ValantDemoApiClient.Client,
+          useValue: new MockClient(),
+        },
+      ],
     });
     service = TestBed.inject(MazeService);
+    client = TestBed.inject(ValantDemoApiClient.Client);
   });
 
-  it('should be created', () => {
+  it('MazeService should be created', () => {
     expect(service).toBeTruthy();
+  });
+
+  it('getListOfMazes should call api client to get a list of mazes.', () => {
+    const spyClient = jest.spyOn(client, 'getListOfMazes');
+    service.getListOfMazes();
+    expect(spyClient).toBeCalled();
+  });
+
+  it('getMazeById should call api client with maze id passed.', () => {
+    const spyClient = jest.spyOn(client, 'getMazeById');
+    service.getMazeById(MOCK_MAZES[0].id);
+    service.getMazeById(MOCK_MAZES[1].id);
+
+    expect(spyClient).toBeCalledWith(MOCK_MAZES[0].id);
+    expect(spyClient).toBeCalledWith(MOCK_MAZES[1].id);
+  });
+
+  it('postNewMaze should call api client with pass POST request passed.', () => {
+    const json: INewMaze = {
+      graphString: 'SOXXXXXXXX#OOOXXXXXXX#OXOOOXOOOO#XXXXOXOXXO#OOOOOOOXXO#OXXOXXXXXO#OOOOXXXXXE#',
+      start: { row: 0, col: 0 },
+      exit: { row: 6, col: 9 },
+    };
+    const spyClient = jest.spyOn(client, 'postNewMaze');
+    service.postNewMaze(json);
+    expect(spyClient).toBeCalledWith(json);
+  });
+
+  it('getNextMovements should call api client to get available moves.', () => {
+    const spyClient = jest.spyOn(client, 'getNextMovements');
+    service.getNextAvailableMoves();
+    expect(spyClient).toBeCalled();
   });
 });
