@@ -4,6 +4,8 @@ import { ValantDemoApiClient } from '../api-client/api-client';
 import { MOCK_MAZES, NEW_MAZE_REQ } from '../_models/maze/mock-mazes';
 import { IMaze, INewMaze, IMovement } from '../_models/maze/maze';
 
+const mockMaze = MOCK_MAZES[0];
+
 class MockClient {
   getListOfMazes(): IMaze[] {
     return [];
@@ -14,7 +16,7 @@ class MockClient {
   }
 
   postNewMaze(_: INewMaze) {
-    return MOCK_MAZES[0];
+    return mockMaze;
   }
 
   getNextMovements(): IMovement[] {
