@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ValantDemoApi.Utils;
 
 namespace ValantDemoApi.ValantMaze
 {
@@ -26,7 +27,7 @@ namespace ValantDemoApi.ValantMaze
       UploadDate = maze.UploadDate;
       Start = new Cell(maze.StartRow, maze.StartCol);
       Exit = new Cell(maze.ExitRow, maze.ExitCol);
-      Graph = Shared.ShareFunctions.ConverGraphStringToGraph(maze.GraphString);
+      Graph = MazeDemoCommons.ConverGraphStringToGraph(maze.GraphString);
     }
 
     public int Id { get; set; }

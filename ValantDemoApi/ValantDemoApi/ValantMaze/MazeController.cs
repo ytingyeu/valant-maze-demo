@@ -4,7 +4,8 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using ValantDemoApi.Shared;
+using ValantDemoApi.Utils;
+using static ValantDemoApi.Utils.MazeDemoCommons;
 
 namespace ValantDemoApi.ValantMaze
 {
@@ -15,7 +16,7 @@ namespace ValantDemoApi.ValantMaze
     private readonly ILogger<MazeController> _logger;
     private readonly IMazeRepository _mazeRepository;
 
-    public MazeController(ILogger<MazeController> logger, ApiContext context, IMazeRepository mazeRepository)
+    public MazeController(ILogger<MazeController> logger, IMazeRepository mazeRepository)
     {
       _logger = logger;
       _mazeRepository = mazeRepository;
@@ -48,10 +49,10 @@ namespace ValantDemoApi.ValantMaze
     {
       var listOfMazeDTO = new List<MazeResponseDto>();
 
-      var mazes = _mazeRepository.GetMazes();
-
       try
       {
+        var mazes = _mazeRepository.GetMazes();
+
         foreach (var maze in mazes)
         {
           listOfMazeDTO.Add(new MazeResponseDto(maze));
@@ -73,7 +74,7 @@ namespace ValantDemoApi.ValantMaze
       {
         var newMaze = new Maze
         {
-          Id = ShareFunctions.GenerateMockMazeId(),
+          Id = MazeDemoCommons.GenerateMockMazeId(),
           UploadDate = DateTime.UtcNow.ToString(),
           GraphString = mazeDto.GraphString,
           StartRow = mazeDto.Start.Row,
@@ -99,26 +100,14 @@ namespace ValantDemoApi.ValantMaze
     public IEnumerable<Movement> GetNextAvailableMoves()
     {
       var moveList = new List<Movement>();
+      var directionDict = GetDirectionDict();
 
       foreach (string direction in Enum.GetNames(typeof(MoveEnum)))
       {
-        moveList.Add(new Movement(direction, DirectionDict[direction]));
+        moveList.Add(new Movement(direction, directionDict[direction]));
       }
 
       return moveList;
-    }
-
-    private enum MoveEnum
-    {
-      Up, Down, Left, Right
-    }
-
-    private static Dictionary<string, Cell> DirectionDict => new()
-    {
-      { MoveEnum.Up.ToString(), new Cell(-1, 0) },
-      { MoveEnum.Down.ToString(), new Cell(1, 0) },
-      { MoveEnum.Left.ToString(), new Cell(0, -1) },
-      { MoveEnum.Right.ToString(), new Cell(0, 1) },
-    };
+    }    
   }
 }

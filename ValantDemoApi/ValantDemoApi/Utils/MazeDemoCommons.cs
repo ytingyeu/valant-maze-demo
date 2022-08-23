@@ -2,10 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ValantDemoApi.ValantMaze;
 
-namespace ValantDemoApi.Shared
+namespace ValantDemoApi.Utils
 {
-  public class ShareFunctions
+  public class MazeDemoCommons
   {
 
     private static int mockMazeIdCounter = 14;
@@ -48,6 +49,22 @@ namespace ValantDemoApi.Shared
       }
 
       return graph;
+    }
+
+    public enum MoveEnum
+    {
+      Up, Down, Left, Right
+    }
+
+    public static Dictionary<string, Cell> GetDirectionDict()
+    {
+      return new Dictionary<string, Cell>
+      {
+        { MoveEnum.Up.ToString(), new Cell(-1, 0) },
+        { MoveEnum.Down.ToString(), new Cell(1, 0) },
+        { MoveEnum.Left.ToString(), new Cell(0, -1) },
+        { MoveEnum.Right.ToString(), new Cell(0, 1) },
+      };
     }
   }
 }

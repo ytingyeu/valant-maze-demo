@@ -9,6 +9,7 @@ namespace ValantDemoApi
 {
   public class ApiContext : DbContext
   {
+    public ApiContext() : base() { }
     public ApiContext(DbContextOptions<ApiContext> options)
         : base(options)
     {
