@@ -18,12 +18,12 @@ Please use the commands that project template provides to intall and run applica
 
 ### Frontend side
 #### Implementation
-Include three paths:
+Include three routes:
 - `/` :  home path, which only displays a short welcome message.
-- `/available-mazes`: display available mazes can play. Also contain a simple form to upload maze.
-- `/play-maze/{id}`: where the client play a maze. Include maze display and a gamepad.
+- `/available-mazes`: display available mazes can play and a simple form to upload new maze.
+- `/play-maze/{id}`: where clients play a maze. Include maze display and a gamepad.
 
-I also replace the provided `stuff` service to my own service `_services/maze.service.`
+I replace the provided `stuff` service to my own service `_services/maze.service.`
 
 #### Play a game
 1. From any page, click `Available Mazes` on the navbar.
@@ -56,7 +56,6 @@ Maze{
   ExitCol: INTEGER;
 }
 ```
-
 
 Important directories/files:
 - `ValantDemoApi.MockData`: include mock data that added into database.
@@ -110,7 +109,7 @@ If there is any GET maze request, backend converts `GraphString` to `string[][]`
 Backend unit test cases cover four HTTP request tests and four controller tests.
 When testing HTTP request, the test case for `GET /Maze/all` is configured to be run first. 
 The reason is I am not able to isolate test DB context and `POST` request impacts the result.
-While testing controllers does not have this issue. All test cases use different mocked DB contexts.
+While testing controllers, it does not have this issue. All test cases use different mocked DB contexts.
 
 For frontend unit test, 
 Service functions to make API calls are all covered.
