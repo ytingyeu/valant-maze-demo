@@ -102,10 +102,15 @@ namespace ValantDemoApi.Tests
       var strContent = await response.Content.ReadAsStringAsync();
       var content = JsonConvert.DeserializeObject<MazeResponseDto>(strContent);
 
-      int expectId = MazeDemoCommons.GetLastCreatedMockMazeId();
+      //int expectId = MazeDemoCommons.GetLastCreatedMockMazeId();
       var expectGraph = MazeDemoCommons.ConverGraphStringToGraph(newMazeDto.GraphString);
 
-      response.Headers.Location.AbsoluteUri.Should().Contain($"/Maze/{expectId}");
+      response.Headers.Location.AbsoluteUri.Should().NotBeEmpty();
+
+      var location = response.Headers.Location.AbsoluteUri.ToString();
+      var pathArray = location.Replace("http://", "").Replace("https://", "").Split("/");
+      var expectId = Int32.Parse(pathArray[^1]);
+
       content.Id.Should().Equals(expectId);
       content.Start.Should().BeEquivalentTo(newMazeDto.Start);
       content.Exit.Should().BeEquivalentTo(newMazeDto.Exit);
@@ -248,10 +253,10 @@ namespace ValantDemoApi.Tests
 
         Assert.NotNull(contentResult);
         Assert.IsAssignableFrom<MazeResponseDto>(contentResult);
-
-        var createdMaze = context.Mazes.Find(MazeDemoCommons.GetLastCreatedMockMazeId());
-        var expectContent = new MazeResponseDto(createdMaze);
+ 
         var resContent = (MazeResponseDto)contentResult;
+        var createdMaze = context.Mazes.Find(resContent.Id);
+        var expectContent = new MazeResponseDto(createdMaze);
         resContent.Should().BeEquivalentTo(expectContent);
       }
     }

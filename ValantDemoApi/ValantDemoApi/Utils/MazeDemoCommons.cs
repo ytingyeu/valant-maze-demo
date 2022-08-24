@@ -9,23 +9,6 @@ namespace ValantDemoApi.Utils
   public class MazeDemoCommons
   {
 
-    private static int mockMazeIdCounter = 14;
-
-    public static int GetCurrentMockMazeId()
-    {
-      return mockMazeIdCounter;
-    }
-
-    public static int GetLastCreatedMockMazeId()
-    {
-      return mockMazeIdCounter - 1;
-    }
-
-    public static int GenerateMockMazeId()
-    {
-      return mockMazeIdCounter++;
-    }
-
     public static string[][] ConverGraphStringToGraph(string graphString)
     {
       const string replaceInvalidSymbol = "X";
