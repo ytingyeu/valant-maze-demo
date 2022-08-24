@@ -44,9 +44,9 @@ I replace the provided `stuff` service to my own service `_services/maze.service
 Use `Microsoft.EntityFrameworkCore.InMemory` as mock database. 
 Test data is added when running in developemnt mode only.
 
-Maze table schema 
+Mocked Maze table schema 
 ```sql
-Maze{
+Maze {
   Id: INTEGER;
   UploadDate: DATETIME;
   GraphString: VARCHAR(MAX);
