@@ -94,16 +94,15 @@ OOOOXXXXXX
 ```
 An example file `NewMazeString.example.txt` with the same content is in the project root.
 
-After click upload, Angular app read the file above and convert to a single string which use `"#"` to idicate new lines.
+After click Upload, Angular app reads the file and convert to a single string which use `"#"` to idicate new lines.
 
 Example:
 ```
 XOXXXXXXXX#OOOXOOOOEXOXOOOXXOOO#XXOXOXOXXO#OOOOOOOXXO#OXXOXXSXXO#OOOOXXXXXX#
 ```
 
-In my design, the backedn app stores this string (called `GraphString`) in database. 
-And if there is any GET maze request,
-backend will convert `GraphString` to `string[][]` and return to the client as JSON.
+The backend app then stores this string (called `GraphString`) in database. 
+If there is any GET maze request, backend converts `GraphString` to `string[][]` and return to the client as JSON.
 
 
 ## About test
