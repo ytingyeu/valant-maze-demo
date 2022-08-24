@@ -42,7 +42,7 @@ I replace the provided `stuff` service to my own service `_services/maze.service
 ### Backend side
 #### Implementation
 Use `Microsoft.EntityFrameworkCore.InMemory` as mock database. 
-Test data are only be added when running in developemnt mode.
+Test data is added when running in developemnt mode only.
 
 Maze table schema 
 ```sql
@@ -73,7 +73,8 @@ Include four API endpoints:
   
 
 ## Maze definition format 
-Use plain text and break with each row with any one of `["\r", "\n", "\n\r" ]`. The last line doesn't need to be an empty line.
+Use plain text and any new line character from `["\r", "\n", "\n\r" ]`. 
+The last line doesn't need to be an empty line.
 
 Assumptions: 
 - The shape of maze MUST be rectangle.
@@ -93,8 +94,8 @@ OOOOXXXXXX
 ```
 An example file `NewMazeString.example.txt` with the same content is in the project root.
 
-After click Upload, Angular app reads the file and convert to a single string which use `"#"` to idicate new lines.
-It also looks up the position of `"S"` and `"E"` which will be used to generate request body.
+After click Upload, Angular app reads the file and convert to a single string which use `"#"` to idicate end-of-row.
+It also looks up the position of `"S"` and `"E"` which will be used to generate POST request body.
 
 Example:
 ```
