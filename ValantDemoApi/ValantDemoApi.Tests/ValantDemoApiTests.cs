@@ -3,18 +3,14 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web;
 using FluentAssertions;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 using NUnit.Framework;
 using ValantDemoApi.MockData;
 using ValantDemoApi.ValantMaze;
-using ValantDemoApi.Utils;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Microsoft.EntityFrameworkCore;
-using System.Web.Http.Results;
 using Microsoft.AspNetCore.Mvc;
 using static ValantDemoApi.Utils.MazeDemoCommons;
 
@@ -102,14 +98,13 @@ namespace ValantDemoApi.Tests
       var strContent = await response.Content.ReadAsStringAsync();
       var content = JsonConvert.DeserializeObject<MazeResponseDto>(strContent);
 
-      //int expectId = MazeDemoCommons.GetLastCreatedMockMazeId();
-      var expectGraph = MazeDemoCommons.ConverGraphStringToGraph(newMazeDto.GraphString);
+      var expectGraph = ConverGraphStringToGraph(newMazeDto.GraphString);
 
       response.Headers.Location.AbsoluteUri.Should().NotBeEmpty();
 
       var location = response.Headers.Location.AbsoluteUri.ToString();
       var pathArray = location.Replace("http://", "").Replace("https://", "").Split("/");
-      var expectId = Int32.Parse(pathArray[^1]);
+      var expectId = int.Parse(pathArray[^1]);
 
       content.Id.Should().Equals(expectId);
       content.Start.Should().BeEquivalentTo(newMazeDto.Start);
@@ -166,7 +161,6 @@ namespace ValantDemoApi.Tests
 
         var resContent = (List<MazeResponseDto>)contentResult;
         resContent.Should().BeEquivalentTo(expectContent);
-
       }
     }
 
@@ -268,31 +262,24 @@ namespace ValantDemoApi.Tests
         .UseInMemoryDatabase(databaseName: $"TestContext{_rnd.Next()}")
         .Options;
 
-      using (var context = new ApiContext(options))
+      using var context = new ApiContext(options);
+      var mockRepository = new MazeRepository(context);
+      MazeController controller = new(_logger, mockRepository);
+
+      var movements = controller.GetNextAvailableMoves();
+
+      Assert.NotNull(movements);
+      Assert.IsAssignableFrom<List<Movement>>(movements);
+
+      var expectContent = new List<Movement>();
+      var directionDict = GetDirectionDict();
+
+      foreach (string direction in Enum.GetNames(typeof(MoveEnum)))
       {
-        var mockRepository = new MazeRepository(context);
-        MazeController controller = new(_logger, mockRepository);
-
-        var movements = controller.GetNextAvailableMoves();
-
-        Assert.NotNull(movements);
-        Assert.IsAssignableFrom<List<Movement>>(movements);
-
-        var expectContent = new List<Movement>();
-        var directionDict = MazeDemoCommons.GetDirectionDict();
-
-        foreach (string direction in Enum.GetNames(typeof(MoveEnum)))
-        {
-          expectContent.Add(new Movement(direction, directionDict[direction]));
-        }
-
-        movements.Should().BeEquivalentTo(expectContent);
+        expectContent.Add(new Movement(direction, directionDict[direction]));
       }
-    }
 
-    private object GetDirectionDict()
-    {
-      throw new NotImplementedException();
+      movements.Should().BeEquivalentTo(expectContent);
     }
   }
 }
