@@ -48,12 +48,12 @@ Maze table schema
 ```sql
 Maze{
   Id: INTEGER;
-  UploadDate: DATETIME
+  UploadDate: DATETIME;
   GraphString: VARCHAR(MAX);
-  StartRow: INTEGER
-  StartCol: INTEGER
-  ExitRow: INTEGER
-  ExitCol: INTEGER
+  StartRow: INTEGER;
+  StartCol: INTEGER;
+  ExitRow: INTEGER;
+  ExitCol: INTEGER;
 }
 ```
 
