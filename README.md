@@ -59,7 +59,7 @@ Maze {
 
 Important directories/files:
 - `ValantDemoApi.MockData`: include mock data that added into database.
-- `ValantDemoApi.Utils`: include common features such graph string converter and direction definition that this demo uses.
+- `ValantDemoApi.Utils`: include common features such as graph string converter and direction definition.
 - `ValantDemoApi.ValantMaze`: include the model, repository, and controller of Maze entity.
 - `./ApiContext`: the database context that used by this demo.
 - `./Setup`: mock data is added here in `Configure()`.
