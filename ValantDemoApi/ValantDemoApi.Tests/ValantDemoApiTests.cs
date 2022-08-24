@@ -110,8 +110,7 @@ namespace ValantDemoApi.Tests
       content.Start.Should().BeEquivalentTo(newMazeDto.Start);
       content.Exit.Should().BeEquivalentTo(newMazeDto.Exit);
       content.Graph.Should().BeEquivalentTo(expectGraph);
-      Assert.IsNotNull(content.UploadDate);
-      Assert.IsNotEmpty(content.UploadDate);
+      Assert.IsNotNull(content.UploadDate);      
     }
   }
 

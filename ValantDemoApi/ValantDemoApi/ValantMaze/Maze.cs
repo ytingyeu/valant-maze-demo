@@ -10,7 +10,7 @@ namespace ValantDemoApi.ValantMaze
   public class Maze
   {
     public int Id { get; set; }
-    public string UploadDate { get; set; }
+    public DateTime UploadDate { get; set; }
     public string GraphString { get; set; }
     public int StartRow { get; set; }
     public int StartCol { get; set; }
@@ -31,7 +31,7 @@ namespace ValantDemoApi.ValantMaze
     }
 
     public int Id { get; set; }
-    public string UploadDate { get; set; }
+    public DateTime UploadDate { get; set; }
     public Cell Start { get; set; }
     public Cell Exit { get; set; }
     public string[][] Graph { get; set; }
