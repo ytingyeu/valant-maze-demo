@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ValantDemoApi.Utils;
+using ValantDemoApi.ValantMaze.Models;
 using static ValantDemoApi.Utils.MazeDemoCommons;
 
 namespace ValantDemoApi.ValantMaze
@@ -52,7 +53,7 @@ namespace ValantDemoApi.ValantMaze
     /// <summary>
     /// Returns all mazes
     /// </summary>
-    /// <returns>A list of maze DTO</returns>
+    /// <returns>A list of maze response DTO</returns>
     [HttpGet("all")]
     public ActionResult<MazeResponseDto[]> GetAllMazes()
     {
@@ -80,7 +81,7 @@ namespace ValantDemoApi.ValantMaze
     /// Adds new maze into database, then returns it to the client
     /// </summary>
     /// <param name="mazeDto">A request DTO of new maze</param>
-    /// <returns>The DTO of new created maze</returns>
+    /// <returns>A response DTO of new created maze</returns>
     [HttpPost]
     public async Task<ActionResult<MazeResponseDto[]>> PostNewMaze([FromBody] PostNewMazeDto mazeDto)
     {
