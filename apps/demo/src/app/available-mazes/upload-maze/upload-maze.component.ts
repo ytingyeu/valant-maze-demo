@@ -31,9 +31,9 @@ export class UploadMazeComponent implements OnInit {
   }
 
   onFileSelect(event: { target: { files: string | any[] } }) {
-    // console.log(event.target.files);
+    // console.log(event);
 
-    if (event.target.files.length > 0) {
+    if (event.target.files && event.target.files.length > 0) {
       const file = event.target.files[0];
 
       if (file.type === 'text/plain') {
