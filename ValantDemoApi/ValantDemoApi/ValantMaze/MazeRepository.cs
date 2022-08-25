@@ -19,22 +19,39 @@ namespace ValantDemoApi.ValantMaze
       _context.Mazes.Add(newMaze);
     }
 
+    /// <summary>
+    /// Find and returns a maze by ID from injected context
+    /// </summary>
+    /// <param name="mazeId">Maze ID</param>
+    /// <returns>A maze object</returns>
     public async Task<Maze> GetMazeById(int mazeId)
     {
       var foundMaze = await _context.Mazes.FindAsync(mazeId);
       return foundMaze;
     }
 
+    /// <summary>
+    /// Returns all maze from injected context
+    /// </summary>
+    /// <returns>A list of maze</returns>
     public IEnumerable<Maze> GetMazes()
     {
       return _context.Mazes.ToList();
     }
 
+    /// <summary>
+    /// Save context changes asynchronously
+    /// </summary>
+    /// <returns>A task contains the number of entries written into the context</returns>
     public Task<int> SaveAsync()
     {
       return _context.SaveChangesAsync();
     }
 
+    /// <summary>
+    /// Save context changes synchronously
+    /// </summary>
+    /// <returns>The number of entries written into the context</returns>
     public int Save()
     {
       return _context.SaveChanges();
