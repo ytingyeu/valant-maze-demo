@@ -2,13 +2,17 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ValantDemoApi.ValantMaze;
+using ValantDemoApi.ValantMaze.Models;
 
 namespace ValantDemoApi.Utils
 {
   public class MazeDemoCommons
   {
-
+    /// <summary>
+    /// Convert a graph string to 2-D string array
+    /// </summary>
+    /// <param name="graphString">A string of maze definition</param>
+    /// <returns>A 2-D string array represents a maze</returns>
     public static string[][] ConverGraphStringToGraph(string graphString)
     {
       const string replaceInvalidSymbol = "X";
@@ -55,6 +59,11 @@ namespace ValantDemoApi.Utils
       Up, Down, Left, Right
     }
 
+    /// <summary>
+    /// Returns a dictionary of movement definitions
+    /// { key: movement name; value: a Cell class represents the euclidean vector of movement;}
+    /// </summary>
+    /// <returns>A dictionary of movement definitions</returns>
     public static Dictionary<string, Cell> GetDirectionDict()
     {
       return new Dictionary<string, Cell>
