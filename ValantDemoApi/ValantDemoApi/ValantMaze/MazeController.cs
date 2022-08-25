@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ValantDemoApi.Utils;
+using ValantDemoApi.ValantMaze.Models;
 using static ValantDemoApi.Utils.MazeDemoCommons;
 
 namespace ValantDemoApi.ValantMaze
@@ -22,6 +23,11 @@ namespace ValantDemoApi.ValantMaze
       _mazeRepository = mazeRepository;
     }
 
+    /// <summary>
+    /// Finds and reuturns a maze by ID
+    /// </summary>
+    /// <param name="id">The maze ID</param>
+    /// <returns>A DTO of target maze</returns>
     [HttpGet("{id}")]
     public async Task<ActionResult<MazeResponseDto>> GetMazeById(int id)
     {
@@ -44,6 +50,10 @@ namespace ValantDemoApi.ValantMaze
       }
     }
 
+    /// <summary>
+    /// Returns all mazes
+    /// </summary>
+    /// <returns>A list of maze response DTO</returns>
     [HttpGet("all")]
     public ActionResult<MazeResponseDto[]> GetAllMazes()
     {
@@ -67,6 +77,11 @@ namespace ValantDemoApi.ValantMaze
       return Ok(listOfMazeDTO);
     }
 
+    /// <summary>
+    /// Adds new maze into database, then returns it to the client
+    /// </summary>
+    /// <param name="mazeDto">A request DTO of new maze</param>
+    /// <returns>A response DTO of new created maze</returns>
     [HttpPost]
     public async Task<ActionResult<MazeResponseDto[]>> PostNewMaze([FromBody] PostNewMazeDto mazeDto)
     {
@@ -94,6 +109,10 @@ namespace ValantDemoApi.ValantMaze
       }
     }
 
+    /// <summary>
+    /// Returns all availabe moves
+    /// </summary>
+    /// <returns>A list of movement defination</returns>
     [HttpGet]
     [Route("NextAvailableMoves")]
     public IEnumerable<Movement> GetNextAvailableMoves()
