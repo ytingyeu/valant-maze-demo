@@ -13,6 +13,7 @@ using Moq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using static ValantDemoApi.Utils.MazeDemoCommons;
+using ValantDemoApi.ValantMaze.Models;
 
 namespace ValantDemoApi.Tests
 {
