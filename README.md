@@ -116,8 +116,8 @@ For frontend unit test,
 Service functions to make API calls are all covered.
 Each component is tested at least being created/rendered, @Intput/@Output features, and basic view.
 
-Except the component `upload-maze`. If you run all tests, you might notice one is skipped. 
-I just (8/25) resovled what I was struggling with. Also refactor this component to more testable structure.
+Except the component `upload-maze`.
+I just (8/25) resovled what I was struggling with. Also refactored this component to being more testable.
 Now trying to add more tests that I could not complete this early week.
 
 e2e testing is not implemented.
