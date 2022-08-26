@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { ValantDemoApiClient } from '../api-client/api-client';
-import { MOCK_MAZES, NEW_MAZE_REQ, VALID_MOVEMENTS } from '../_models/maze/mock-mazes';
+import { MOCK_MAZES, MOCK_NEW_MAZE_REQ, VALID_MOVEMENTS } from '../_models/maze/mock-mazes';
 import { HttpClient } from '@angular/common/http';
 
 const mockMaze = MOCK_MAZES[0];
@@ -58,13 +58,13 @@ describe('ApiClient', () => {
   });
 
   it('postNewMaze should make POST requesut to create a maze.', () => {
-    apiClient.postNewMaze(NEW_MAZE_REQ).subscribe((response) => {
+    apiClient.postNewMaze(MOCK_NEW_MAZE_REQ).subscribe((response) => {
       expect(response).toEqual(mockMaze);
     });
 
     const req = httpMock.expectOne(`${baseUrl}/Maze`);
     expect(req.request.method).toBe('POST');
-    expect(req.request.body).toBe(NEW_MAZE_REQ);
+    expect(req.request.body).toBe(MOCK_NEW_MAZE_REQ);
     req.flush(mockMaze);
   });
 

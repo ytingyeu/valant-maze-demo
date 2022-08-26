@@ -41,11 +41,19 @@ export const MOCK_MAZES: IMaze[] = [
   },
 ];
 
-export const NEW_MAZE_REQ: INewMaze = {
+export const MOCK_NEW_MAZE_REQ: INewMaze = {
   graphString: 'SOXXXXXXXX#OOOXXXXXXX#OXOOOXOOOO#XXXXOXOXXO#OOOOOOOXXO#OXXOXXXXXO#OOOOXXXXXE#',
   start: { row: 0, col: 0 },
   exit: { row: 6, col: 9 },
 };
+
+export const MOCK_NEW_MAZE_RAW = new File(
+  ['SOXXXXXXXX\nOOOXXXXXXX\nOXOOOXOOOO\nXXXXOXOXXO\nOOOOOOOXXO\nOXXOXXXXXO\nOOOOXXXXXE\n'],
+  'test-file.txt',
+  {
+    type: 'text/plain',
+  }
+);
 
 export const VALID_MOVEMENTS: IMovement[] = [
   { name: 'Up', direction: { row: -1, col: 0 } },
