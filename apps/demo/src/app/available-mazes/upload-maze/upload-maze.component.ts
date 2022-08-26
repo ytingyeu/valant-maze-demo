@@ -56,12 +56,40 @@ export class UploadMazeComponent implements OnInit {
 
     if (this.mazeFile !== null && this.mazeFile !== undefined) {
       const newMaze = await this.readMazeFileAsMazeObject(this.mazeFile);
-      this.addNewMaze(newMaze);
+      await this.addNewMazePromise(newMaze);
+
+      // await this.mazeService
+      //   .postNewMaze(newMaze)
+      //   .toPromise()
+      //   .then((createdMaze) => {
+      //     this.insertCreatedMazeEmitter(createdMaze);
+      //     this.isSubmitted = false;
+      //     this.uploadForm.reset();
+      //   })
+      //   .catch((err) => {
+      //     this.logger.error('Error uploading new maze: ', err);
+      //   });
+
+      // this.addNewMaze(newMaze);
     } else {
       this.uploadForm.reset();
       this.uploadForm.controls['inputFile'].setValidators([Validators.required]);
       this.uploadForm.get('inputFile').updateValueAndValidity();
     }
+  }
+
+  addNewMazePromise(json: INewMaze) {
+    return this.mazeService
+      .postNewMaze(json)
+      .toPromise()
+      .then((createdMaze) => {
+        this.insertCreatedMazeEmitter(createdMaze);
+        this.isSubmitted = false;
+        this.uploadForm.reset();
+      })
+      .catch((err) => {
+        this.logger.error('Error uploading new maze: ', err);
+      });
   }
 
   private addNewMaze(json: INewMaze): void {

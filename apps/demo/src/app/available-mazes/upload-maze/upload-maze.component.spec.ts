@@ -4,46 +4,42 @@ import { AppModule } from '../../app.module';
 import { MazeService } from '../../_services/maze.service';
 import { FormBuilder } from '@angular/forms';
 import { of as _observableOf } from 'rxjs';
-import { MOCK_MAZES } from '../../_models/maze/mock-mazes';
+import { MOCK_MAZES, MOCK_NEW_MAZE_RAW, MOCK_NEW_MAZE_REQ } from '../../_models/maze/mock-mazes';
 import { INewMaze } from '../../_models/maze/maze';
 
 const mockMazeService = {
   postNewMaze: jest.fn((json: INewMaze) => _observableOf(MOCK_MAZES[0])),
 };
 
-const testFile = new File(['XOXXSXXXXX\nOOOXOOOOEX\n'], 'test-file.txt', {
-  type: 'text/plain',
-});
-
-class FileReaderMock {
-  DONE = FileReader.DONE;
-  EMPTY = FileReader.EMPTY;
-  LOADING = FileReader.LOADING;
-  readyState = 0;
-  error: FileReader['error'] = null;
-  result: FileReader['result'] = null;
-  abort = jest.fn();
-  addEventListener = jest.fn();
-  dispatchEvent = jest.fn();
-  onabort = jest.fn();
-  onerror = jest.fn();
-  onload = jest.fn();
-  onloadend = jest.fn();
-  onloadprogress = jest.fn();
-  onloadstart = jest.fn();
-  onprogress = jest.fn();
-  readAsArrayBuffer = jest.fn();
-  readAsBinaryString = jest.fn();
-  readAsDataURL = jest.fn();
-  readAsText = jest.fn();
-  removeEventListener = jest.fn();
-}
+// class FileReaderMock {
+//   DONE = FileReader.DONE;
+//   EMPTY = FileReader.EMPTY;
+//   LOADING = FileReader.LOADING;
+//   readyState = 0;
+//   error: FileReader['error'] = null;
+//   result: FileReader['result'] = null;
+//   abort = jest.fn();
+//   addEventListener = jest.fn();
+//   dispatchEvent = jest.fn();
+//   onabort = jest.fn();
+//   onerror = jest.fn();
+//   onload = jest.fn();
+//   onloadend = jest.fn();
+//   onloadprogress = jest.fn();
+//   onloadstart = jest.fn();
+//   onprogress = jest.fn();
+//   readAsArrayBuffer = jest.fn();
+//   readAsBinaryString = jest.fn();
+//   readAsDataURL = jest.fn();
+//   readAsText = jest.fn();
+//   removeEventListener = jest.fn();
+// }
 
 describe('UploadMazeComponent', () => {
   let component: Shallow<UploadMazeComponent>;
 
-  const fileReader = new FileReaderMock();
-  jest.spyOn(window, 'FileReader').mockImplementation(() => fileReader);
+  // const fileReader = new FileReaderMock();
+  // jest.spyOn(window, 'FileReader').mockImplementation(() => fileReader);
 
   beforeEach(() => {
     component = new Shallow(UploadMazeComponent, AppModule)
@@ -67,12 +63,12 @@ describe('UploadMazeComponent', () => {
     inputEl.triggerEventHandler('change', {
       target: {
         ...inputEl.nativeElement,
-        files: [testFile],
+        files: [MOCK_NEW_MAZE_RAW],
       },
     });
 
     expect(onFileSelectSpy).toHaveBeenCalled();
-    expect(instance.mazeFile).toEqual(testFile);
+    expect(instance.mazeFile).toEqual(MOCK_NEW_MAZE_RAW);
   });
 
   it('submit should trigger onSubmit.', async () => {
@@ -85,7 +81,7 @@ describe('UploadMazeComponent', () => {
     inputEl.triggerEventHandler('change', {
       target: {
         ...inputEl.nativeElement,
-        files: [testFile],
+        files: [MOCK_NEW_MAZE_RAW],
       },
     });
 
@@ -103,12 +99,12 @@ describe('UploadMazeComponent', () => {
     inputEl.triggerEventHandler('change', {
       target: {
         ...inputEl.nativeElement,
-        files: [testFile],
+        files: [MOCK_NEW_MAZE_RAW],
       },
     });
 
     instance.uploadForm.get('inputFile').setErrors(null);
-    instance.mazeFile = testFile;
+    instance.mazeFile = MOCK_NEW_MAZE_RAW;
 
     find('form.upload-form').triggerEventHandler('ngSubmit', null);
 
@@ -116,28 +112,27 @@ describe('UploadMazeComponent', () => {
   });
 
   // under working test case
-  it.skip('onSubmit should read maze file.', async () => {
+  it('file reader should read maze file.', async () => {
     const { find, instance } = await component.render();
 
-    fileReader.result = 'XOXXSXXXXX\nOOOXOOOOEX\n';
-    fileReader.addEventListener.mockImplementation((_, fn) => fn());
+    // const inputEl = find('input[name=inputFile]');
 
-    const inputEl = find('input[name=inputFile]');
+    const addNewMazeSpy = jest.spyOn(UploadMazeComponent.prototype as any, 'addNewMaze');
 
-    instance.uploadForm.reset();
+    const readMazeSpy = jest
+      .spyOn(instance, 'readMazeFileAsMazeObject')
+      .mockImplementation(jest.fn(() => Promise.resolve(null)));
 
-    inputEl.triggerEventHandler('change', {
-      target: {
-        ...inputEl.nativeElement,
-        files: [testFile],
-      },
-    });
+    instance.mazeFile = MOCK_NEW_MAZE_RAW;
 
-    instance.uploadForm.get('inputFile').setErrors(null);
-    instance.mazeFile = testFile;
+    // find('form.upload-form').triggerEventHandler('submit', null);
+    // expect(fileReader.readAsText).toBeCalled();
+    // expect(fileReader.onload).toBeCalled();
 
-    find('form.upload-form').triggerEventHandler('submit', null);
-    expect(fileReader.readAsText).toBeCalled();
-    expect(fileReader.onload).toBeCalled();
+    const newMaze = await instance.readMazeFileAsMazeObject(instance.mazeFile);
+    await instance.addNewMazePromise(newMaze);
+
+    // await expect(maze).toEqual(MOCK_NEW_MAZE_REQ);
+    expect(mockMazeService.postNewMaze).toBeCalled();
   });
 });
