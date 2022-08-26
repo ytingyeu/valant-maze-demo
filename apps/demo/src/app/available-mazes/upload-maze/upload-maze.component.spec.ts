@@ -11,35 +11,8 @@ const mockMazeService = {
   postNewMaze: jest.fn((json: INewMaze) => _observableOf(MOCK_MAZES[0])),
 };
 
-// class FileReaderMock {
-//   DONE = FileReader.DONE;
-//   EMPTY = FileReader.EMPTY;
-//   LOADING = FileReader.LOADING;
-//   readyState = 0;
-//   error: FileReader['error'] = null;
-//   result: FileReader['result'] = null;
-//   abort = jest.fn();
-//   addEventListener = jest.fn();
-//   dispatchEvent = jest.fn();
-//   onabort = jest.fn();
-//   onerror = jest.fn();
-//   onload = jest.fn();
-//   onloadend = jest.fn();
-//   onloadprogress = jest.fn();
-//   onloadstart = jest.fn();
-//   onprogress = jest.fn();
-//   readAsArrayBuffer = jest.fn();
-//   readAsBinaryString = jest.fn();
-//   readAsDataURL = jest.fn();
-//   readAsText = jest.fn();
-//   removeEventListener = jest.fn();
-// }
-
 describe('UploadMazeComponent', () => {
   let component: Shallow<UploadMazeComponent>;
-
-  // const fileReader = new FileReaderMock();
-  // jest.spyOn(window, 'FileReader').mockImplementation(() => fileReader);
 
   beforeEach(() => {
     component = new Shallow(UploadMazeComponent, AppModule)
@@ -72,7 +45,7 @@ describe('UploadMazeComponent', () => {
   });
 
   it('submit should trigger onSubmit', async () => {
-    const { find, outputs, instance } = await component.render();
+    const { find, instance } = await component.render();
 
     const onSubmitSpy = jest.spyOn(instance, 'onSubmit');
 
@@ -111,7 +84,6 @@ describe('UploadMazeComponent', () => {
     expect(outputs.updateIsLoaded.emit).toBeCalledWith(false);
   });
 
-  // under working test case
   it('file reader should read maze file and call mazeserivce.postNewMaze', async () => {
     const { instance } = await component.render();
 
