@@ -1,9 +1,8 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { IMaze, INewMaze } from '../../_models/maze/maze';
+import { ICell, IMaze, INewMaze, mazeSymbols } from '../../_models/maze/maze';
 import { MazeService } from '../../_services/maze.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LoggingService } from '../../logging/logging.service';
-import { Utils } from '../../_Utils/utils';
 
 @Component({
   selector: 'valant-upload-maze',
@@ -43,12 +42,10 @@ export class UploadMazeComponent implements OnInit {
         this.uploadForm.controls['inputFile'].setValidators([Validators.required]);
         this.uploadForm.get('inputFile').updateValueAndValidity();
       }
-
-      this.mazeFile = file;
     }
   }
 
-  onSubmit() {
+  async onSubmit() {
     this.isSubmitted = true;
 
     if (this.uploadForm.invalid) {
@@ -58,33 +55,8 @@ export class UploadMazeComponent implements OnInit {
     this.isLoadedEmitter(false);
 
     if (this.mazeFile !== null && this.mazeFile !== undefined) {
-      const fileReader = new FileReader();
-
-      fileReader.onload = (fileLoadedEvent) => {
-        try {
-          const textFromFileLoaded = fileLoadedEvent.target.result.toString();
-          const cleanstring = this.cleanGraphString(textFromFileLoaded);
-          const [start, exit] = Utils.getStartAndExit(cleanstring);
-
-          if (start === undefined || exit === undefined) {
-            const errorMsg = 'Error adding new maze: could not find start or exit point.';
-            this.logger.error(errorMsg);
-            return;
-          }
-
-          let json = {
-            graphString: cleanstring,
-            start: start,
-            exit: exit,
-          };
-
-          this.postNewMazes(json);
-        } catch (err) {
-          this.logger.error('Error reading new maze file: ', err);
-        }
-      };
-
-      fileReader.readAsText(this.mazeFile, 'UTF-8');
+      const newMaze = await this.readMazeFileAsMazeObject(this.mazeFile);
+      this.addNewMaze(newMaze);
     } else {
       this.uploadForm.reset();
       this.uploadForm.controls['inputFile'].setValidators([Validators.required]);
@@ -92,7 +64,7 @@ export class UploadMazeComponent implements OnInit {
     }
   }
 
-  private postNewMazes(json: INewMaze): void {
+  private addNewMaze(json: INewMaze): void {
     this.mazeService.postNewMaze(json).subscribe({
       next: (createdMaze: IMaze) => {
         this.insertCreatedMazeEmitter(createdMaze);
@@ -105,6 +77,73 @@ export class UploadMazeComponent implements OnInit {
     });
   }
 
+  insertCreatedMazeEmitter(createdMaze: IMaze) {
+    this.insertCreatedMaze.emit(createdMaze);
+  }
+
+  isLoadedEmitter(newIsLoaded: boolean) {
+    this.updateIsLoaded.emit(newIsLoaded);
+  }
+
+  readMazeFileAsMazeObject(file: Blob): Promise<INewMaze> {
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.addEventListener('load', (evt) => {
+        try {
+          const textFromFileLoaded = evt.target.result.toString();
+          const cleanstring = this.cleanGraphString(textFromFileLoaded);
+          const [start, exit] = this.getStartAndExit(cleanstring);
+
+          if (start === undefined || exit === undefined) {
+            const errorMsg = 'Error adding new maze: could not find start or exit point.';
+            this.logger.error(errorMsg);
+            return;
+          }
+
+          let maze: INewMaze = {
+            graphString: cleanstring,
+            start: start,
+            exit: exit,
+          };
+
+          resolve(maze as INewMaze);
+        } catch (err) {
+          this.logger.error('Error reading new maze file: ', err);
+        }
+      });
+      reader.readAsText(file, 'UTF-8');
+    });
+  }
+
+  private getStartAndExit(graphString: string): [ICell, ICell] {
+    let start: ICell;
+    let exit: ICell;
+
+    graphString.split('#').forEach((row: string, rowIdx: number) => {
+      row.split('').forEach((symbol: string, colIdx: number) => {
+        if (symbol == mazeSymbols.start) {
+          start = {
+            row: rowIdx,
+            col: colIdx,
+          };
+        }
+
+        if (symbol == mazeSymbols.exit) {
+          exit = {
+            row: rowIdx,
+            col: colIdx,
+          };
+        }
+
+        if (start !== undefined && exit !== undefined) {
+          return;
+        }
+      });
+    });
+
+    return [start, exit];
+  }
+
   private cleanGraphString(input: string): string {
     let cleanstring = input.replace(/(\r\n|\n|\r)/gm, '#');
 
@@ -114,13 +153,5 @@ export class UploadMazeComponent implements OnInit {
     }
 
     return cleanstring;
-  }
-
-  insertCreatedMazeEmitter(createdMaze: IMaze) {
-    this.insertCreatedMaze.emit(createdMaze);
-  }
-
-  isLoadedEmitter(newIsLoaded: boolean) {
-    this.updateIsLoaded.emit(newIsLoaded);
   }
 }
