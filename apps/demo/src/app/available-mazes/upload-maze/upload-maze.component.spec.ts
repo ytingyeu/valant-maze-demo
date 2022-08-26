@@ -9,7 +9,7 @@ const mockMazeService = {
   postNewMaze: jest.fn(() => of([])),
 };
 
-fdescribe('UploadMazeComponent', () => {
+describe('UploadMazeComponent', () => {
   let component: Shallow<UploadMazeComponent>;
 
   beforeEach(() => {
@@ -29,7 +29,46 @@ fdescribe('UploadMazeComponent', () => {
     const { find, instance } = await component.render();
 
     const onFileSelectSpy = jest.spyOn(instance, 'onFileSelect');
-    find('input[name=inputFile]').triggerEventHandler('change', {});
+
+    const testFile = new File(['XOXXSXXXXX\nOOOXOOOOEX\n'], 'test-file.txt', {
+      type: 'text/plain',
+    });
+
+    const inputEl = find('input[name=inputFile]');
+
+    inputEl.triggerEventHandler('change', {
+      target: {
+        ...inputEl.nativeElement,
+        files: [testFile],
+      },
+    });
+
     expect(onFileSelectSpy).toHaveBeenCalled();
+    expect(instance.mazeFile).toEqual(testFile);
+  });
+
+  it.skip('click submit.', async () => {
+    const { find, outputs, instance } = await component.render();
+
+    const testFile = new File(['XOXXSXXXXX\nOOOXOOOOEX\n'], 'test-file.txt', {
+      type: 'text/plain',
+    });
+
+    const inputEl = find('input[name=inputFile]');
+
+    inputEl.triggerEventHandler('change', {
+      target: {
+        ...inputEl.nativeElement,
+        files: [testFile],
+      },
+    });
+
+    instance.uploadForm.patchValue({ invalid: false });
+
+    const postNewMazesSpy = jest.spyOn(UploadMazeComponent.prototype as any, 'postNewMazes');
+
+    find('form.upload-form').triggerEventHandler('ngSubmit', null);
+    //find('button[name=submit-btn]').triggerEventHandler('click', null);
+    expect(postNewMazesSpy).toBeCalled();
   });
 });
