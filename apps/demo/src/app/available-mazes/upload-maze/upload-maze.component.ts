@@ -56,21 +56,7 @@ export class UploadMazeComponent implements OnInit {
 
     if (this.mazeFile !== null && this.mazeFile !== undefined) {
       const newMaze = await this.readMazeFileAsMazeObject(this.mazeFile);
-      await this.addNewMazePromise(newMaze);
-
-      // await this.mazeService
-      //   .postNewMaze(newMaze)
-      //   .toPromise()
-      //   .then((createdMaze) => {
-      //     this.insertCreatedMazeEmitter(createdMaze);
-      //     this.isSubmitted = false;
-      //     this.uploadForm.reset();
-      //   })
-      //   .catch((err) => {
-      //     this.logger.error('Error uploading new maze: ', err);
-      //   });
-
-      // this.addNewMaze(newMaze);
+      await this.addNewMazeAsync(newMaze);
     } else {
       this.uploadForm.reset();
       this.uploadForm.controls['inputFile'].setValidators([Validators.required]);
@@ -78,31 +64,15 @@ export class UploadMazeComponent implements OnInit {
     }
   }
 
-  addNewMazePromise(json: INewMaze) {
-    return this.mazeService
-      .postNewMaze(json)
-      .toPromise()
-      .then((createdMaze) => {
-        this.insertCreatedMazeEmitter(createdMaze);
-        this.isSubmitted = false;
-        this.uploadForm.reset();
-      })
-      .catch((err) => {
-        this.logger.error('Error uploading new maze: ', err);
-      });
-  }
-
-  private addNewMaze(json: INewMaze): void {
-    this.mazeService.postNewMaze(json).subscribe({
-      next: (createdMaze: IMaze) => {
-        this.insertCreatedMazeEmitter(createdMaze);
-        this.isSubmitted = false;
-        this.uploadForm.reset();
-      },
-      error: (error) => {
-        this.logger.error('Error uploading new maze: ', error);
-      },
-    });
+  async addNewMazeAsync(json: INewMaze) {
+    try {
+      const createdMaze = await this.mazeService.postNewMaze(json).toPromise();
+      this.insertCreatedMazeEmitter(createdMaze);
+      this.isSubmitted = false;
+      this.uploadForm.reset();
+    } catch (err) {
+      this.logger.error('Error uploading new maze: ', err);
+    }
   }
 
   insertCreatedMazeEmitter(createdMaze: IMaze) {

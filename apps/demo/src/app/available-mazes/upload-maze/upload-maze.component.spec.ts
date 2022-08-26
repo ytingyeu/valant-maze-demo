@@ -53,7 +53,7 @@ describe('UploadMazeComponent', () => {
     expect(rendering).toBeTruthy();
   });
 
-  it('select file should send file info to property.', async () => {
+  it('select file should send file info to property', async () => {
     const { find, instance } = await component.render();
 
     const onFileSelectSpy = jest.spyOn(instance, 'onFileSelect');
@@ -71,7 +71,7 @@ describe('UploadMazeComponent', () => {
     expect(instance.mazeFile).toEqual(MOCK_NEW_MAZE_RAW);
   });
 
-  it('submit should trigger onSubmit.', async () => {
+  it('submit should trigger onSubmit', async () => {
     const { find, outputs, instance } = await component.render();
 
     const onSubmitSpy = jest.spyOn(instance, 'onSubmit');
@@ -89,7 +89,7 @@ describe('UploadMazeComponent', () => {
     expect(onSubmitSpy).toBeCalled();
   });
 
-  it('onSubmit should update isLoaded.', async () => {
+  it('onSubmit should update isLoaded', async () => {
     const { find, outputs, instance } = await component.render();
 
     const inputEl = find('input[name=inputFile]');
@@ -112,27 +112,15 @@ describe('UploadMazeComponent', () => {
   });
 
   // under working test case
-  it('file reader should read maze file.', async () => {
-    const { find, instance } = await component.render();
-
-    // const inputEl = find('input[name=inputFile]');
-
-    const addNewMazeSpy = jest.spyOn(UploadMazeComponent.prototype as any, 'addNewMaze');
-
-    const readMazeSpy = jest
-      .spyOn(instance, 'readMazeFileAsMazeObject')
-      .mockImplementation(jest.fn(() => Promise.resolve(null)));
+  it('file reader should read maze file and call mazeserivce.postNewMaze', async () => {
+    const { instance } = await component.render();
 
     instance.mazeFile = MOCK_NEW_MAZE_RAW;
 
-    // find('form.upload-form').triggerEventHandler('submit', null);
-    // expect(fileReader.readAsText).toBeCalled();
-    // expect(fileReader.onload).toBeCalled();
-
     const newMaze = await instance.readMazeFileAsMazeObject(instance.mazeFile);
-    await instance.addNewMazePromise(newMaze);
+    await instance.addNewMazeAsync(newMaze);
 
-    // await expect(maze).toEqual(MOCK_NEW_MAZE_REQ);
+    expect(newMaze).toEqual(MOCK_NEW_MAZE_REQ);
     expect(mockMazeService.postNewMaze).toBeCalled();
   });
 });
