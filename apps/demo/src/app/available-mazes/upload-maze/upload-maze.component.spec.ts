@@ -9,6 +9,10 @@ const mockMazeService = {
   postNewMaze: jest.fn(() => of([])),
 };
 
+const testFile = new File(['XOXXSXXXXX\nOOOXOOOOEX\n'], 'test-file.txt', {
+  type: 'text/plain',
+});
+
 describe('UploadMazeComponent', () => {
   let component: Shallow<UploadMazeComponent>;
 
@@ -30,10 +34,6 @@ describe('UploadMazeComponent', () => {
 
     const onFileSelectSpy = jest.spyOn(instance, 'onFileSelect');
 
-    const testFile = new File(['XOXXSXXXXX\nOOOXOOOOEX\n'], 'test-file.txt', {
-      type: 'text/plain',
-    });
-
     const inputEl = find('input[name=inputFile]');
 
     inputEl.triggerEventHandler('change', {
@@ -49,10 +49,6 @@ describe('UploadMazeComponent', () => {
 
   it.skip('click submit.', async () => {
     const { find, outputs, instance } = await component.render();
-
-    const testFile = new File(['XOXXSXXXXX\nOOOXOOOOEX\n'], 'test-file.txt', {
-      type: 'text/plain',
-    });
 
     const inputEl = find('input[name=inputFile]');
 
